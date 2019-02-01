@@ -1,4 +1,4 @@
-package com.app.dixon.resourceparser.func.home.activity;
+package com.app.dixon.resourceparser.func.home.control;
 
 import com.app.dixon.resourceparser.core.pub.parser.Action1;
 import com.app.dixon.resourceparser.core.pub.parser.ParseError;
@@ -19,7 +19,7 @@ import java.util.List;
 
 public class MovieOutlineRequest extends Action1<List<MovieOutline>> {
 
-    private String mUrl = "https://www.dy2018.com/";
+    private static final String URL = "https://www.dy2018.com/";
     private Listener mListener;
 
     public MovieOutlineRequest(Listener listener) {
@@ -35,7 +35,7 @@ public class MovieOutlineRequest extends Action1<List<MovieOutline>> {
     //访问的url
     @Override
     public String url() {
-        return mUrl;
+        return URL;
     }
 
     //成功回调 主线程
@@ -58,7 +58,7 @@ public class MovieOutlineRequest extends Action1<List<MovieOutline>> {
     @Override
     public List<MovieOutline> onParse(Document doc) {
         List<MovieOutline> movies = new ArrayList<>();
-        Elements divs = doc.select("div.co_content222");
+        Elements divs = doc.select("div.co_content222");//获取div的class为co_content222的元素
         for (int i = 0; i < divs.size(); i++) {
             Elements nodeAList = divs.get(i).select("a");
             for (int j = 0; j < nodeAList.size(); j++) {

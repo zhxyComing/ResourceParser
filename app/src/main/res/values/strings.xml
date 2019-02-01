@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ResourceParser</string>
+    <string name="movie">Movie</string>
 </resources>

@@ -9,6 +9,9 @@ package com.app.dixon.resourceparser.core.pub.parser;
 
 public class Parser {
 
+    private Parser() {
+    }
+
     public static ParseQueue newParseQueue() {
         ParseQueue queue = new ParseQueue();
         queue.start();
