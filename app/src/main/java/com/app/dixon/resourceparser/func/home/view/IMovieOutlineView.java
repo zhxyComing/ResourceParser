@@ -1,4 +1,4 @@
-package com.app.dixon.resourceparser.func.home.model;
+package com.app.dixon.resourceparser.func.home.view;
 
 import com.app.dixon.resourceparser.model.MovieOutline;
 

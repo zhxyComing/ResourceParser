@@ -46,6 +46,15 @@ public class ParseQueue {
         mQueue.add(new Request<>(action));
     }
 
+    public <T> void add(ActionPost<T> action) {
+        mQueue.add(new Request<>(action));
+    }
+
+    public <T> void add(ActionPost1<T> action) {
+        mQueue.add(new Request<>(action));
+    }
+
+
     public void stop() {
         for (int i = 0; i < mDispatchers.length; i++) {
             if (mDispatchers[i] != null) {

@@ -7,18 +7,27 @@
     <application
         android:name=".core.pub.activity.BaseApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_icon"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".func.home.model.MovieOutlineActivity">
+        <activity
+            android:name=".func.home.view.MovieOutlineActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".func.search.view.SearchActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".func.special.view.SpecialActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".func.special.view.SpecialDetailActivity"></activity>
     </application>
 
 </manifest>

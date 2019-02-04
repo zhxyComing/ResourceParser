@@ -1,15 +1,17 @@
-package com.app.dixon.resourceparser.func.home.model;
+package com.app.dixon.resourceparser.func.home.view;
 
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.app.dixon.resourceparser.R;
 import com.app.dixon.resourceparser.core.pub.activity.BaseActivity;
 import com.app.dixon.resourceparser.core.util.ToastUtils;
 import com.app.dixon.resourceparser.func.home.present.MovieOutlinePresent;
+import com.app.dixon.resourceparser.func.search.view.SearchActivity;
 import com.app.dixon.resourceparser.model.MovieOutline;
 import com.github.ybq.android.spinkit.SpinKitView;
 
@@ -25,6 +27,7 @@ public class MovieOutlineActivity extends BaseActivity implements IMovieOutlineV
     private ListView mListView;
     private SpinKitView mLoadingView;
     private MovieOutlineAdapter mAdapter;
+    private ImageView mSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,17 @@ public class MovieOutlineActivity extends BaseActivity implements IMovieOutlineV
 
         mPresent = new MovieOutlinePresent(this);
         mPresent.loadData();
+
+        initView();
+    }
+
+    private void initView() {
+        mSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SearchActivity.startSearchActivity(MovieOutlineActivity.this);
+            }
+        });
     }
 
     @Override
@@ -40,6 +54,7 @@ public class MovieOutlineActivity extends BaseActivity implements IMovieOutlineV
         super.onContentChanged();
         mListView = findViewById(R.id.lvMovies);
         mLoadingView = findViewById(R.id.svLoadingView);
+        mSearch = findViewById(R.id.ivSearch);
     }
 
     @Override

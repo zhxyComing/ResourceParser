@@ -2,9 +2,10 @@ package com.app.dixon.resourceparser.func.home.present;
 
 import com.app.dixon.resourceparser.core.manager.ParserManager;
 import com.app.dixon.resourceparser.func.home.control.MovieOutlineRequest;
-import com.app.dixon.resourceparser.func.home.model.IMovieOutlineView;
+import com.app.dixon.resourceparser.func.home.view.IMovieOutlineView;
 import com.app.dixon.resourceparser.model.MovieOutline;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**

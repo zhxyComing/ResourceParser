@@ -9,4 +9,8 @@ package com.app.dixon.resourceparser.core.pub.parser;
 public abstract class Action<T> implements Request.ParseListener<T>, Response.Listener<T> {
 
     public abstract String url();
+
+    public String charSet() {
+        return null;
+    }
 }

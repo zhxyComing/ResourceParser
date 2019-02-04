@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.app.dixon.resourceparser.func.home.view.MovieOutlineActivity">
+    tools:context=".func.special.view.SpecialDetailActivity">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
@@ -27,37 +27,24 @@
                 android:paddingTop="10dp">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
                     android:layout_gravity="center"
                     android:layout_marginStart="@dimen/margin_normal"
                     android:layout_marginLeft="@dimen/margin_normal"
-                    android:src="@mipmap/ic_movie" />
+                    android:src="@mipmap/ic_special" />
 
                 <TextView
+                    android:id="@+id/tvTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginStart="@dimen/margin_normal"
                     android:layout_marginLeft="@dimen/margin_normal"
                     android:gravity="center_vertical"
-                    android:text="@string/movie"
+                    android:maxLines="1"
+                    android:text="@string/special"
                     android:textColor="@color/text_black_2"
                     android:textSize="14sp" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-
-                <ImageView
-                    android:id="@+id/ivSearch"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="@dimen/margin_normal"
-                    android:layout_marginRight="@dimen/margin_normal"
-                    android:padding="9dp"
-                    android:src="@mipmap/ic_search" />
             </LinearLayout>
 
         </LinearLayout>
@@ -72,6 +59,8 @@
             android:id="@+id/lvMovies"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/margin_small"
+            android:layout_marginRight="@dimen/margin_small"
             android:divider="@null"
             android:scrollbars="none" />
 
@@ -84,6 +73,14 @@
             android:layout_marginBottom="40dp"
             android:visibility="gone"
             app:SpinKit_Color="@color/text_black_normal" />
+
+        <TextView
+            android:id="@+id/tvLoadingTip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="解析页面多 请耐心等待"
+            android:visibility="gone" />
 
     </FrameLayout>
 

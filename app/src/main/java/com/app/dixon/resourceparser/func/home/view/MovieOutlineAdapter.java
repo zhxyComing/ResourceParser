@@ -1,11 +1,13 @@
-package com.app.dixon.resourceparser.func.home.model;
+package com.app.dixon.resourceparser.func.home.view;
 
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.app.dixon.resourceparser.R;
@@ -65,12 +67,19 @@ public class MovieOutlineAdapter extends BaseAdapter {
         MovieOutline movie = mList.get(position);
         vh.title.setText(movie.getTitle());
         vh.image.setImageBitmap(null);
+        vh.error.setVisibility(View.GONE);
 
         ParserManager.queue().add(new MovieDetailRequest(movie.getTitle(), movie.getUrl(), new MovieDetailRequest.Listener() {
             @Override
             public void onSuccess(MovieDetail detail) {
                 vh.image.setUrl(detail.getCoverImg());
                 vh.image.setOnLongClickListener(new ClipboardCopyListener(mContext, detail.getDownloadUrl()));
+            }
+
+            @Override
+            public void onFail(String msg) {
+                vh.error.setVisibility(View.VISIBLE);
+                vh.image.setOnLongClickListener(new ClipboardCopyListener(mContext, null));
             }
         }));
 
@@ -96,10 +105,12 @@ public class MovieOutlineAdapter extends BaseAdapter {
 
         TextView title;
         AsyncImageView image;
+        ImageView error;
 
         public ViewHolder(View view) {
             title = view.findViewById(R.id.tvTitle);
             image = view.findViewById(R.id.ivCover);
+            error = view.findViewById(R.id.ivError);
         }
     }
 
@@ -115,8 +126,12 @@ public class MovieOutlineAdapter extends BaseAdapter {
 
         @Override
         public boolean onLongClick(View v) {
-            ToastUtils.toast("链接已复制到剪切板");
-            copy();
+            if (TextUtils.isEmpty(mUrl)) {
+                ToastUtils.toast("当前页面失效 复制链接失败");
+            } else {
+                ToastUtils.toast("链接已复制到剪切板");
+                copy();
+            }
             return true;
         }
 

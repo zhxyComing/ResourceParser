@@ -1,4 +1,6 @@
 <resources>
-    <string name="app_name">ResourceParser</string>
-    <string name="movie">Movie</string>
+    <string name="app_name">虚无之地</string>
+    <string name="movie">电影</string>
+    <string name="special">虚无之地</string>
+    <string name="load_more">更多推荐</string>
 </resources>

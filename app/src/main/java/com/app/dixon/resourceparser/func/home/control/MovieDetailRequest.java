@@ -1,12 +1,16 @@
 package com.app.dixon.resourceparser.func.home.control;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.app.dixon.resourceparser.core.pub.parser.Action;
+import com.app.dixon.resourceparser.core.pub.parser.Action1;
+import com.app.dixon.resourceparser.core.pub.parser.ParseError;
 import com.app.dixon.resourceparser.model.MovieDetail;
 
 import org.jsoup.nodes.Document;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,7 +20,7 @@ import java.util.Map;
  * 电影下载链接、封面图片解析
  */
 
-public class MovieDetailRequest extends Action<MovieDetail> {
+public class MovieDetailRequest extends Action1<MovieDetail> {
 
     private static final Map<String, MovieDetail> cache = new HashMap<>();
     private static final String HOST = "Https://www.dy2018.com/";
@@ -43,6 +47,10 @@ public class MovieDetailRequest extends Action<MovieDetail> {
 
     @Override
     public MovieDetail onParse(Document doc) {
+        //dy2018存在服务器正常 但是页面为空的情况...
+        if (TextUtils.isEmpty(doc.body().text())) {
+            return null;
+        }
         MovieDetail detail = new MovieDetail();
         detail.setTitle(mTitle);
         if (cache.containsKey(mAddress)) {
@@ -79,7 +87,14 @@ public class MovieDetailRequest extends Action<MovieDetail> {
         return coverImg;
     }
 
+    @Override
+    public void onErrorResponse(ParseError error) {
+        mListener.onFail(error.getMsg());
+    }
+
     public interface Listener {
         void onSuccess(MovieDetail detail);
+
+        void onFail(String msg);
     }
 }
