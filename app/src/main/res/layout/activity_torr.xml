@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".func.torr.view.TorrActivity">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="1dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include layout="@layout/top_card" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingTop="10dp">
+
+                <ImageView
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/margin_normal"
+                    android:layout_marginLeft="@dimen/margin_normal"
+                    android:src="@mipmap/ic_build" />
+
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/margin_normal"
+                    android:layout_marginLeft="@dimen/margin_normal"
+                    android:gravity="center_vertical"
+                    android:maxLines="1"
+                    android:text="@string/torr"
+                    android:textColor="@color/text_black_2"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/etInput"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginLeft="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:layout_weight="1"
+            android:background="@drawable/bg_edit_text_search_torr"
+            android:hint="@string/search_torr_tip"
+            android:maxLines="1"
+            android:paddingStart="@dimen/margin_small"
+            android:paddingLeft="@dimen/margin_small"
+            android:paddingEnd="@dimen/margin_normal"
+            android:paddingRight="@dimen/margin_normal"
+            android:textColor="@color/text_black"
+            android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/ivSearch"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/margin_normal"
+            android:layout_marginTop="4dp"
+            android:layout_marginRight="@dimen/margin_normal"
+            android:src="@mipmap/ic_search" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_normal"
+        android:lineSpacingExtra="2dp"
+        android:text="@string/torr_desc"
+        android:textColor="@color/text_black_normal"
+        android:textSize="10sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_normal"
+        android:layout_marginRight="@dimen/margin_normal"
+        android:background="@color/back_color_gray">
+
+        <TextView
+            android:id="@+id/tvDownloadUrl"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:paddingLeft="@dimen/margin_small"
+            android:paddingRight="@dimen/margin_small"
+            android:text="@string/download_empty_tip"
+            android:textColor="@color/text_white"
+            android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/ivCopy"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:src="@mipmap/ic_copy" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ListView
+            android:id="@+id/lvListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/margin_small"
+            android:divider="@null"
+            android:scrollbars="none" />
+
+        <com.github.ybq.android.spinkit.SpinKitView
+            android:id="@+id/svLoadingView"
+            style="@style/SpinKitView.Large.DoubleBounce"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="40dp"
+            android:visibility="gone"
+            app:SpinKit_Color="@color/text_black_normal" />
+    </FrameLayout>
+
+</LinearLayout>

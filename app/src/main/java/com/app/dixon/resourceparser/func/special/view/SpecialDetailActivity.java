@@ -11,6 +11,7 @@ import com.app.dixon.resourceparser.R;
 import com.app.dixon.resourceparser.core.pub.activity.BaseActivity;
 import com.app.dixon.resourceparser.core.util.ToastUtils;
 import com.app.dixon.resourceparser.func.special.present.SpecialDetailPresent;
+import com.app.dixon.resourceparser.func.torr.view.TorrActivity;
 import com.app.dixon.resourceparser.model.SpecialDetail;
 import com.github.ybq.android.spinkit.SpinKitView;
 
@@ -26,6 +27,8 @@ public class SpecialDetailActivity extends BaseActivity implements ISpecialDetai
 
     private String mTitle;
     private String mAddress;
+
+    private TextView mTorrTip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +47,13 @@ public class SpecialDetailActivity extends BaseActivity implements ISpecialDetai
 
     private void initView() {
         mTitleView.setText(mTitle);
+        mTorrTip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TorrActivity.startTorrActivity(SpecialDetailActivity.this);
+                ToastUtils.toast("朝圣之地");
+            }
+        });
     }
 
     public static void startSpecialDetailActivity(Context context, String title, String address) {
@@ -60,6 +70,7 @@ public class SpecialDetailActivity extends BaseActivity implements ISpecialDetai
         mLoadingView = findViewById(R.id.svLoadingView);
         mTitleView = findViewById(R.id.tvTitle);
         mLoadingTip = findViewById(R.id.tvLoadingTip);
+        mTorrTip = findViewById(R.id.tvTorrTip);
     }
 
     @Override

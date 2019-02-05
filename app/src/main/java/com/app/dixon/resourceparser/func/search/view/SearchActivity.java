@@ -20,6 +20,7 @@ import com.app.dixon.resourceparser.core.util.ToastUtils;
 import com.app.dixon.resourceparser.func.home.view.MovieOutlineAdapter;
 import com.app.dixon.resourceparser.func.search.present.SearchPresent;
 import com.app.dixon.resourceparser.func.special.view.SpecialActivity;
+import com.app.dixon.resourceparser.func.torr.view.TorrActivity;
 import com.app.dixon.resourceparser.model.MovieOutline;
 import com.github.ybq.android.spinkit.SpinKitView;
 
@@ -134,7 +135,7 @@ public class SearchActivity extends BaseActivity implements ISearchView {
                 SpecialActivity.startSpecialActivity(this);
                 return true;
             case Param.TORR_MOVIE:
-                ToastUtils.toast("朝圣之地");
+                TorrActivity.startTorrActivity(this);
                 return true;
             default:
                 return false;

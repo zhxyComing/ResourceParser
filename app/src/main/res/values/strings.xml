@@ -2,8 +2,13 @@
     <string name="app_name">虚无之地</string>
     <string name="movie">电影</string>
     <string name="special">虚无之地</string>
+    <string name="torr">朝圣之地</string>
+    <string name="torr_tip">朝圣之地 -></string>
     <string name="load_more">更多推荐</string>
     <string name="download_url">下载链接</string>
     <string name="app_name_last">无之地</string>
     <string name="app_name_first">虚</string>
+    <string name="torr_desc">1.网页限制,查询结果为下载链接的各个源网页,需【长按以解析下载链接】;\n2.服务器限制,【不能在短时间内多次请求】,如解析失败请稍后重试.\n3.部分网络服务商无法链接.</string>
+    <string name="download_empty_tip">这里显示下载链接…</string>
+    <string name="search_torr_tip">搜你所想</string>
 </resources>

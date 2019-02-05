@@ -14,7 +14,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".func.home.view.MovieOutlineActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".func.search.view.SearchActivity"
             android:screenOrientation="portrait" />
@@ -36,6 +36,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".func.torr.view.TorrActivity"></activity>
     </application>
 
 </manifest>

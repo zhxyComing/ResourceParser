@@ -85,6 +85,18 @@
             android:textSize="12sp"
             android:visibility="gone" />
 
+        <TextView
+            android:id="@+id/tvTorrTip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|bottom"
+            android:layout_marginBottom="@dimen/margin_large_bigger"
+            android:background="@drawable/load_more"
+            android:padding="6dp"
+            android:text="@string/torr_tip"
+            android:textColor="@color/text_white"
+            android:textSize="12sp" />
+
     </FrameLayout>
 
 </LinearLayout>
