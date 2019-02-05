@@ -1,11 +1,13 @@
 package com.app.dixon.resourceparser.func.home.view;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
+import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ListView;
 
 import com.app.dixon.resourceparser.R;
 import com.app.dixon.resourceparser.core.pub.activity.BaseActivity;
@@ -24,7 +26,7 @@ import java.util.List;
 public class MovieOutlineActivity extends BaseActivity implements IMovieOutlineView {
 
     private MovieOutlinePresent mPresent;
-    private ListView mListView;
+    private GridView mGridView;
     private SpinKitView mLoadingView;
     private MovieOutlineAdapter mAdapter;
     private ImageView mSearch;
@@ -49,10 +51,14 @@ public class MovieOutlineActivity extends BaseActivity implements IMovieOutlineV
         });
     }
 
+    public static void startMovieOutlineActivity(Context context) {
+        context.startActivity(new Intent(context, MovieOutlineActivity.class));
+    }
+
     @Override
     public void onContentChanged() {
         super.onContentChanged();
-        mListView = findViewById(R.id.lvMovies);
+        mGridView = findViewById(R.id.gvMovies);
         mLoadingView = findViewById(R.id.svLoadingView);
         mSearch = findViewById(R.id.ivSearch);
     }
@@ -61,7 +67,7 @@ public class MovieOutlineActivity extends BaseActivity implements IMovieOutlineV
     public void showMovieOutlines(List<MovieOutline> list) {
         if (mAdapter == null) {
             mAdapter = new MovieOutlineAdapter(this, list);
-            mListView.setAdapter(mAdapter);
+            mGridView.setAdapter(mAdapter);
             setShowAnim();
         } else {
             mAdapter.notifyData(list);
@@ -73,7 +79,7 @@ public class MovieOutlineActivity extends BaseActivity implements IMovieOutlineV
                 AnimationUtils.loadAnimation(this, R.anim.bottom_in));
         controller.setDelay(0.5f);
         controller.setOrder(LayoutAnimationController.ORDER_NORMAL);
-        mListView.setLayoutAnimation(controller);
+        mGridView.setLayoutAnimation(controller);
     }
 
     @Override

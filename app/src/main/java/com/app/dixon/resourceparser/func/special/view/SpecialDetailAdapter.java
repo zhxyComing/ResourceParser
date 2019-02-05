@@ -61,7 +61,7 @@ public class SpecialDetailAdapter extends BaseAdapter {
 
     private void loadView(final ViewHolder vh, int position) {
         SpecialDetail special = mList.get(position);
-        vh.article.setText(special.getArticle());
+        setArticle(vh.article, special.getArticle());
         vh.image.setImageDrawable(null);
         vh.image.setUrl(parseUrl(special.getImg()));
         vh.image.setOnLongClickListener(new View.OnLongClickListener() {
@@ -71,6 +71,10 @@ public class SpecialDetailAdapter extends BaseAdapter {
                 return true;
             }
         });
+    }
+
+    private void setArticle(TextView tv, String article) {
+        tv.setText(article.replace(" ", "\n"));
     }
 
     private String parseUrl(String url) {

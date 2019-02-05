@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ListView;
+import android.widget.GridView;
 import android.widget.TextView;
 
 import com.app.dixon.resourceparser.R;
@@ -19,7 +19,7 @@ import java.util.List;
 public class SpecialDetailActivity extends BaseActivity implements ISpecialDetailView {
 
     private SpecialDetailPresent mPresent;
-    private ListView mListView;
+    private GridView mGridView;
     private SpinKitView mLoadingView;
     private SpecialDetailAdapter mAdapter;
     private TextView mTitleView, mLoadingTip;
@@ -56,7 +56,7 @@ public class SpecialDetailActivity extends BaseActivity implements ISpecialDetai
     @Override
     public void onContentChanged() {
         super.onContentChanged();
-        mListView = findViewById(R.id.lvMovies);
+        mGridView = findViewById(R.id.gvMovies);
         mLoadingView = findViewById(R.id.svLoadingView);
         mTitleView = findViewById(R.id.tvTitle);
         mLoadingTip = findViewById(R.id.tvLoadingTip);
@@ -66,7 +66,7 @@ public class SpecialDetailActivity extends BaseActivity implements ISpecialDetai
     public void showList(List<SpecialDetail> list) {
         if (mAdapter == null) {
             mAdapter = new SpecialDetailAdapter(this, list);
-            mListView.setAdapter(mAdapter);
+            mGridView.setAdapter(mAdapter);
         } else {
             mAdapter.notifyData(list);
         }

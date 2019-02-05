@@ -14,6 +14,21 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".func.home.view.MovieOutlineActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".func.search.view.SearchActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".func.special.view.SpecialActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".func.special.view.SpecialDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".func.home.view.DownloadListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".func.start.LaunchActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,13 +36,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".func.search.view.SearchActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".func.special.view.SpecialActivity"
-            android:screenOrientation="portrait" />
-        <activity android:name=".func.special.view.SpecialDetailActivity"></activity>
     </application>
 
 </manifest>

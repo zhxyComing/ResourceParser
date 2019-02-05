@@ -9,11 +9,9 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import com.app.dixon.resourceparser.R;
 import com.app.dixon.resourceparser.core.pub.Param;
@@ -30,7 +28,7 @@ import java.util.List;
 public class SearchActivity extends BaseActivity implements ISearchView {
 
     private SearchPresent mPresent;
-    private ListView mListView;
+    private GridView mGridView;
     private SpinKitView mLoadingView;
     private MovieOutlineAdapter mAdapter;
     private ImageView mSearch;
@@ -86,7 +84,7 @@ public class SearchActivity extends BaseActivity implements ISearchView {
     @Override
     public void onContentChanged() {
         super.onContentChanged();
-        mListView = findViewById(R.id.lvMovies);
+        mGridView = findViewById(R.id.gvMovies);
         mLoadingView = findViewById(R.id.svLoadingView);
         mSearch = findViewById(R.id.ivSearch);
         mInput = findViewById(R.id.etInput);
@@ -96,7 +94,7 @@ public class SearchActivity extends BaseActivity implements ISearchView {
     public void showSearchResult(List<MovieOutline> list) {
         if (mAdapter == null) {
             mAdapter = new MovieOutlineAdapter(this, list);
-            mListView.setAdapter(mAdapter);
+            mGridView.setAdapter(mAdapter);
             setShowAnim();
         } else {
             mAdapter.notifyData(list);
@@ -108,7 +106,7 @@ public class SearchActivity extends BaseActivity implements ISearchView {
                 AnimationUtils.loadAnimation(this, R.anim.bottom_in));
         controller.setDelay(0.5f);
         controller.setOrder(LayoutAnimationController.ORDER_NORMAL);
-        mListView.setLayoutAnimation(controller);
+        mGridView.setLayoutAnimation(controller);
     }
 
     @Override
@@ -119,20 +117,24 @@ public class SearchActivity extends BaseActivity implements ISearchView {
     @Override
     public void showLoading() {
         mLoadingView.setVisibility(View.VISIBLE);
-        mListView.setVisibility(View.GONE);
+        mGridView.setVisibility(View.GONE);
     }
 
     @Override
     public void stopLoading() {
         mLoadingView.setVisibility(View.GONE);
-        mListView.setVisibility(View.VISIBLE);
+        mGridView.setVisibility(View.VISIBLE);
     }
 
     @Override
     public boolean tryStartHidePage(String search) {
+        //之后单独摘成一个页面中转Manager
         switch (search) {
             case Param.SPECIAL_MOVIE:
                 SpecialActivity.startSpecialActivity(this);
+                return true;
+            case Param.TORR_MOVIE:
+                ToastUtils.toast("朝圣之地");
                 return true;
             default:
                 return false;

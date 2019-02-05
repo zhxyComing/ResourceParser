@@ -36,12 +36,12 @@
                     android:layout_marginBottom="@dimen/margin_small"
                     android:layout_weight="1"
                     android:background="@drawable/bg_edit_text_search"
+                    android:hint=" 输入电影名称"
                     android:maxLines="1"
                     android:paddingLeft="@dimen/margin_normal"
                     android:paddingRight="@dimen/margin_normal"
-                    android:hint=" 输入电影名称"
-                    android:textCursorDrawable="@drawable/cursor_input"
                     android:textColor="@color/text_white"
+                    android:textCursorDrawable="@drawable/cursor_input"
                     android:textSize="12sp" />
 
                 <ImageView
@@ -63,11 +63,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ListView
-            android:id="@+id/lvMovies"
+        <GridView
+            android:id="@+id/gvMovies"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
             android:divider="@null"
+            android:numColumns="2"
             android:scrollbars="none" />
 
         <com.github.ybq.android.spinkit.SpinKitView

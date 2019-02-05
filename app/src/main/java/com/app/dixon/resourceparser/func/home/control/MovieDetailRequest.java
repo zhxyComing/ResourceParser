@@ -23,7 +23,7 @@ import java.util.Map;
 public class MovieDetailRequest extends Action1<MovieDetail> {
 
     private static final Map<String, MovieDetail> cache = new HashMap<>();
-    private static final String HOST = "Https://www.dy2018.com/";
+    private static final String HOST = "https://www.dy2018.com/";
 
     private String mTitle;
     private String mAddress;
@@ -51,17 +51,14 @@ public class MovieDetailRequest extends Action1<MovieDetail> {
         if (TextUtils.isEmpty(doc.body().text())) {
             return null;
         }
+        if (cache.containsKey(mAddress)) {
+            return cache.get(mAddress);
+        }
         MovieDetail detail = new MovieDetail();
         detail.setTitle(mTitle);
-        if (cache.containsKey(mAddress)) {
-            MovieDetail cacheDetail = cache.get(mAddress);
-            detail.setDownloadUrl(cacheDetail.getDownloadUrl());
-            detail.setCoverImg(cacheDetail.getCoverImg());
-        } else {
-            detail.setDownloadUrl(parseDownloadUrl(doc));
-            detail.setCoverImg(parseCoverImg(doc));
-            cache.put(mAddress, detail);
-        }
+        detail.setDownloadUrl(parseDownloadUrl(doc));
+        detail.setCoverImg(parseCoverImg(doc));
+        cache.put(mAddress, detail);
         return detail;
     }
 

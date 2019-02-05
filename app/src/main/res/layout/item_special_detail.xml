@@ -1,45 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
 
     <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/margin_small"
-        android:layout_marginTop="@dimen/margin_normal"
-        android:layout_marginRight="@dimen/margin_small"
+        android:layout_marginStart="6dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="2dp"
+        android:layout_weight="1.5"
         app:cardCornerRadius="2dp"
         app:cardElevation="0dp">
 
-        <LinearLayout
+        <com.app.dixon.resourceparser.core.pub.view.AsyncImageView
+            android:id="@+id/ivCover"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <com.app.dixon.resourceparser.core.pub.view.AsyncImageView
-                android:id="@+id/ivCover"
-                android:layout_width="match_parent"
-                android:layout_height="380dp"
-                android:background="@color/back_color_gray"
-                android:scaleType="centerCrop" />
-
-            <TextView
-                android:id="@+id/tvArticle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:gravity="center"
-                android:paddingLeft="6dp"
-                android:paddingTop="@dimen/margin_normal"
-                android:paddingRight="6dp"
-                android:paddingBottom="@dimen/margin_normal"
-                android:textColor="@color/text_black"
-                android:textIsSelectable="true"
-                android:textSize="12sp" />
-        </LinearLayout>
+            android:background="@color/back_color_gray"
+            android:scaleType="centerCrop" />
 
     </android.support.v7.widget.CardView>
 
-</FrameLayout>
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="6dp"
+        android:layout_marginRight="6dp"
+        android:layout_marginBottom="2dp"
+        android:layout_weight="1"
+        android:background="@drawable/special_detail_desc">
+
+        <TextView
+            android:id="@+id/tvArticle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            android:ellipsize="end"
+            android:gravity="top|left"
+            android:lineSpacingExtra="2dp"
+            android:minHeight="300dp"
+            android:paddingLeft="6dp"
+            android:paddingTop="6dp"
+            android:paddingRight="6dp"
+            android:paddingBottom="6dp"
+            android:textColor="@color/text_black_2"
+            android:textIsSelectable="true"
+            android:textSize="10sp" />
+
+        <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="#99000000" />-->
+    </FrameLayout>
+
+</LinearLayout>

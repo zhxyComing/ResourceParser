@@ -10,10 +10,19 @@ public class MovieOutline {
 
     private String title;
     private String url;
+    private MovieDetail detailCache;
 
     public MovieOutline(String title, String url) {
         this.title = title;
         this.url = url;
+    }
+
+    public MovieDetail getDetailCache() {
+        return detailCache;
+    }
+
+    public void setDetailCache(MovieDetail detailCache) {
+        this.detailCache = detailCache;
     }
 
     public String getTitle() {

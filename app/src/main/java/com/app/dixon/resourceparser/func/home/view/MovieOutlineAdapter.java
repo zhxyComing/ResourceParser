@@ -63,30 +63,45 @@ public class MovieOutlineAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private void loadView(final ViewHolder vh, int position) {
-        MovieOutline movie = mList.get(position);
+    private void loadView(final ViewHolder vh, final int position) {
+        final MovieOutline movie = mList.get(position);
         vh.title.setText(movie.getTitle());
         vh.image.setImageBitmap(null);
         vh.error.setVisibility(View.GONE);
 
-        ParserManager.queue().add(new MovieDetailRequest(movie.getTitle(), movie.getUrl(), new MovieDetailRequest.Listener() {
-            @Override
-            public void onSuccess(MovieDetail detail) {
-                vh.image.setUrl(detail.getCoverImg());
-                vh.image.setOnLongClickListener(new ClipboardCopyListener(mContext, detail.getDownloadUrl()));
-            }
+        MovieDetail detail = movie.getDetailCache();
+        if (detail != null) {
+            //Cache机制
+            //首页电影较多，一次性前往所有页面的详情页获取电影封面和链接不现实
+            //而adapter动态获取又存在反复获取不合理因素
+            //通过queue的缓存存在延迟问题
+            //所以采用这种缓存机制
+            vh.image.setUrl(detail.getCoverImg());
+            vh.image.setOnLongClickListener(new ClipboardCopyListener(mContext, detail.getDownloadUrl()));
+            mList.get(position).setDetailCache(detail);
+        } else {
+            ParserManager.queue().add(new MovieDetailRequest(movie.getTitle(), movie.getUrl(), new MovieDetailRequest.Listener() {
+                @Override
+                public void onSuccess(MovieDetail detail) {
+                    vh.image.setUrl(detail.getCoverImg());
+                    vh.image.setOnLongClickListener(new ClipboardCopyListener(mContext, detail.getDownloadUrl()));
+                    mList.get(position).setDetailCache(detail);
+                }
 
-            @Override
-            public void onFail(String msg) {
-                vh.error.setVisibility(View.VISIBLE);
-                vh.image.setOnLongClickListener(new ClipboardCopyListener(mContext, null));
-            }
-        }));
+                @Override
+                public void onFail(String msg) {
+                    vh.error.setVisibility(View.VISIBLE);
+                    vh.image.setOnLongClickListener(new ClipboardCopyListener(mContext, null));
+                }
+            }));
+        }
 
         vh.image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtils.toast("长按复制下载链接");
+                if (!TextUtils.isEmpty(movie.getUrl())) {
+                    DownloadListActivity.startDownloadListActivity(mContext, movie.getUrl());
+                }
             }
         });
     }
@@ -129,7 +144,7 @@ public class MovieOutlineAdapter extends BaseAdapter {
             if (TextUtils.isEmpty(mUrl)) {
                 ToastUtils.toast("当前页面失效 复制链接失败");
             } else {
-                ToastUtils.toast("链接已复制到剪切板");
+                ToastUtils.toast("已复制首个下载链接");
                 copy();
             }
             return true;
