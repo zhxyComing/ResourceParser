@@ -14,6 +14,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 
 import com.app.dixon.resourceparser.R;
+import com.app.dixon.resourceparser.core.manager.AnalyticsManager;
 import com.app.dixon.resourceparser.core.pub.Param;
 import com.app.dixon.resourceparser.core.pub.activity.BaseActivity;
 import com.app.dixon.resourceparser.core.util.ToastUtils;
@@ -70,6 +71,7 @@ public class SearchActivity extends BaseActivity implements ISearchView {
         if (TextUtils.isEmpty(text)) {
             ToastUtils.toast("请输入正确的内容");
         } else {
+            AnalyticsManager.Event.onMovieSearch(this, text);
             mPresent.search(text);
         }
     }

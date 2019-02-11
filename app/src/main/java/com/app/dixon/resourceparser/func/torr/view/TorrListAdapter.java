@@ -75,7 +75,7 @@ public class TorrListAdapter extends BaseAdapter {
         vh.card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ToastUtils.toast("服务器限制 请长按解析下载链接");
+                ToastUtils.toast("长按解析该数据源");
             }
         });
         vh.card.setOnLongClickListener(new View.OnLongClickListener() {

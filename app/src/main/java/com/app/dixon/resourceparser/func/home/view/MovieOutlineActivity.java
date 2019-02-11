@@ -8,12 +8,15 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.app.dixon.resourceparser.R;
 import com.app.dixon.resourceparser.core.pub.activity.BaseActivity;
 import com.app.dixon.resourceparser.core.util.ToastUtils;
 import com.app.dixon.resourceparser.func.home.present.MovieOutlinePresent;
 import com.app.dixon.resourceparser.func.search.view.SearchActivity;
+import com.app.dixon.resourceparser.func.set.EditActivity;
+import com.app.dixon.resourceparser.func.torr.view.TorrActivity;
 import com.app.dixon.resourceparser.model.MovieOutline;
 import com.github.ybq.android.spinkit.SpinKitView;
 
@@ -30,6 +33,7 @@ public class MovieOutlineActivity extends BaseActivity implements IMovieOutlineV
     private SpinKitView mLoadingView;
     private MovieOutlineAdapter mAdapter;
     private ImageView mSearch;
+    private TextView mTorr, mEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +53,18 @@ public class MovieOutlineActivity extends BaseActivity implements IMovieOutlineV
                 SearchActivity.startSearchActivity(MovieOutlineActivity.this);
             }
         });
+        mTorr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TorrActivity.startTorrActivity(MovieOutlineActivity.this);
+            }
+        });
+        mEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditActivity.startEditActivity(MovieOutlineActivity.this);
+            }
+        });
     }
 
     public static void startMovieOutlineActivity(Context context) {
@@ -61,6 +77,8 @@ public class MovieOutlineActivity extends BaseActivity implements IMovieOutlineV
         mGridView = findViewById(R.id.gvMovies);
         mLoadingView = findViewById(R.id.svLoadingView);
         mSearch = findViewById(R.id.ivSearch);
+        mTorr = findViewById(R.id.tvTorr);
+        mEdit = findViewById(R.id.tvEdit);
     }
 
     @Override

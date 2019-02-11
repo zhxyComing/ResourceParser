@@ -3,6 +3,9 @@
     package="com.app.dixon.resourceparser">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:name=".core.pub.activity.BaseApplication"
@@ -36,7 +39,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".func.torr.view.TorrActivity"></activity>
+        <activity
+            android:name=".func.torr.view.TorrActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".func.set.EditActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

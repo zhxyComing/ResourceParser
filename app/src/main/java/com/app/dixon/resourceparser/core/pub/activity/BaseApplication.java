@@ -2,6 +2,7 @@ package com.app.dixon.resourceparser.core.pub.activity;
 
 import android.app.Application;
 
+import com.app.dixon.resourceparser.core.manager.AnalyticsManager;
 import com.app.dixon.resourceparser.core.manager.AsyncImageLoader;
 import com.app.dixon.resourceparser.core.manager.ParserManager;
 
@@ -24,6 +25,8 @@ public class BaseApplication extends Application {
     private void init() {
         ParserManager.init();
         AsyncImageLoader.init(this);
+        //友盟统计
+        AnalyticsManager.init(this);
     }
 
     public static Application getApplication() {

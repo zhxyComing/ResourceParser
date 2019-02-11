@@ -13,7 +13,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.app.dixon.resourceparser.R;
+import com.app.dixon.resourceparser.core.manager.AnalyticsManager;
 import com.app.dixon.resourceparser.core.pub.activity.BaseActivity;
+import com.app.dixon.resourceparser.core.util.DialogUtils;
+import com.app.dixon.resourceparser.core.util.HandlerUtils;
 import com.app.dixon.resourceparser.core.util.ToastUtils;
 import com.app.dixon.resourceparser.func.torr.present.TorrPresent;
 import com.app.dixon.resourceparser.model.TorrDetail;
@@ -66,6 +69,14 @@ public class TorrActivity extends BaseActivity implements ITorrView {
                 ToastUtils.toast("已复制到剪贴板");
             }
         });
+
+        //延迟0.5s显示dialog
+        HandlerUtils.runOnUiThreadDelayed(new Runnable() {
+            @Override
+            public void run() {
+                DialogUtils.showTorrTipDialog(TorrActivity.this);
+            }
+        }, 500);
     }
 
     private void search() {
@@ -73,6 +84,7 @@ public class TorrActivity extends BaseActivity implements ITorrView {
         if (TextUtils.isEmpty(text)) {
             ToastUtils.toast("请输入正确的内容");
         } else {
+            AnalyticsManager.Event.onTorrSearch(this, text);
             mPresent.search(text);
         }
     }
