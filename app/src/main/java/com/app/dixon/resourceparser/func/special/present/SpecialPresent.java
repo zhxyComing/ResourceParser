@@ -49,22 +49,4 @@ public class SpecialPresent {
             }
         }));
     }
-
-    public void search(String text) {
-        mView.clearRecommend();
-        mView.showLoading();
-        ParserManager.queue().add(new SpecialSearchRequest(text, new SpecialSearchRequest.Listener() {
-            @Override
-            public void onSuccess(List<SpecialOutline> list) {
-                mView.stopLoading();
-                mView.addSpecialList(list);
-            }
-
-            @Override
-            public void onFail(String msg) {
-                mView.stopLoading();
-                mView.showFail(msg);
-            }
-        }));
-    }
 }

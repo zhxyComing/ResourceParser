@@ -7,27 +7,25 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.app.dixon.resourceparser.R;
 import com.app.dixon.resourceparser.core.pub.activity.BaseActivity;
+import com.app.dixon.resourceparser.core.pub.view.AutoLoadListener;
+import com.app.dixon.resourceparser.core.pub.view.LoadMoreGridView;
 import com.app.dixon.resourceparser.core.util.ToastUtils;
 import com.app.dixon.resourceparser.func.special.present.SpecialPresent;
 import com.app.dixon.resourceparser.model.SpecialOutline;
 import com.github.ybq.android.spinkit.SpinKitView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SpecialActivity extends BaseActivity implements ISpecialView {
 
     private SpecialPresent mPresent;
-    private GridView mGridView;
+    private LoadMoreGridView mGridView;
     private SpinKitView mLoadingView;
     private SpecialOutlineAdapter mAdapter;
-    private TextView mLoadMore;
     private EditText mInput;
     private ImageView mSearch;
 
@@ -45,13 +43,6 @@ public class SpecialActivity extends BaseActivity implements ISpecialView {
     }
 
     private void initView() {
-        mLoadMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mPresent.loadMore(++mCurrentIndex);
-            }
-        });
-
         mInput.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -65,6 +56,19 @@ public class SpecialActivity extends BaseActivity implements ISpecialView {
             }
         });
 
+        mGridView.setAutoLoadCallBack(new AutoLoadListener.AutoLoadCallBack() {
+            @Override
+            public void execute() {
+                mPresent.loadMore(++mCurrentIndex);
+            }
+        });
+
+        mSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                search();
+            }
+        });
     }
 
     private void search() {
@@ -72,7 +76,7 @@ public class SpecialActivity extends BaseActivity implements ISpecialView {
         if (TextUtils.isEmpty(text)) {
             ToastUtils.toast("请输入正确的内容");
         } else {
-            mPresent.search(text);
+            SpecialSearchResultActivity.startSSRActivity(this, text);
         }
     }
 
@@ -85,7 +89,6 @@ public class SpecialActivity extends BaseActivity implements ISpecialView {
         super.onContentChanged();
         mGridView = findViewById(R.id.gvMovies);
         mLoadingView = findViewById(R.id.svLoadingView);
-        mLoadMore = findViewById(R.id.tvLoadMore);
         mInput = findViewById(R.id.etInput);
         mSearch = findViewById(R.id.ivSearch);
     }
@@ -120,13 +123,5 @@ public class SpecialActivity extends BaseActivity implements ISpecialView {
     @Override
     public void stopLoading() {
         mLoadingView.setVisibility(View.GONE);
-    }
-
-    //一旦搜索 就会清除推荐数据、隐藏加载更多推荐按钮
-    @Override
-    public void clearRecommend() {
-        mCurrentIndex = 1;
-        showSpecialList(new ArrayList<SpecialOutline>());
-        mLoadMore.setVisibility(View.GONE);
     }
 }
