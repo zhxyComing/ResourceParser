@@ -4,11 +4,9 @@ import com.app.dixon.resourceparser.model.SpecialOutline;
 
 import java.util.List;
 
-public interface ISpecialView {
+public interface ISpecialSearchResultView {
 
     void showSpecialList(List<SpecialOutline> list);
-
-    void addSpecialList(List<SpecialOutline> list);
 
     void showFail(String err);
 

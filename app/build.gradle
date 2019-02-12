@@ -36,8 +36,10 @@ dependencies {
     //loading库 暂时用这个
     implementation 'com.github.ybq:Android-SpinKit:1.1.0'
     //友盟
-    implementation  'com.umeng.umsdk:analytics:8.0.0'
-    implementation  'com.umeng.umsdk:common:2.0.0'
+    implementation 'com.umeng.umsdk:analytics:8.0.0'
+    implementation 'com.umeng.umsdk:common:2.0.0'
+
+    //开源组件库
 
 //    implementation 'com.mcxiaoke.volley:library:1.0.19'
 }

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tvTip"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_normal"
+        android:background="@drawable/bg_aty_tip"
+        android:paddingBottom="@dimen/margin_small"
+        android:paddingEnd="@dimen/margin_small"
+        android:paddingLeft="@dimen/margin_small"
+        android:paddingRight="@dimen/margin_normal_bigger"
+        android:paddingStart="@dimen/margin_small"
+        android:paddingTop="@dimen/margin_small"
+        android:textColor="@color/text_white" />
+</merge>

@@ -45,6 +45,9 @@
         <activity
             android:name=".func.set.EditActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".func.special.view.SpecialSearchResultActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

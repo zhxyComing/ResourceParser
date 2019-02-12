@@ -27,7 +27,7 @@ public class EditActivity extends BaseActivity {
     }
 
     private void initView() {
-        String text = "版本 " + BuildConfig.VERSION_NAME;
+        String text = "虚无之地 版本" + BuildConfig.VERSION_NAME;
         mVersion.setText(text);
 
         mUpdateDesc.setText(FileUtils.getFromAssets("update.txt", this));
