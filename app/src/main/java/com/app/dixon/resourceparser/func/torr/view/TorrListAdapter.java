@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.app.dixon.resourceparser.R;
 import com.app.dixon.resourceparser.core.manager.ParserManager;
 import com.app.dixon.resourceparser.core.util.ToastUtils;
+import com.app.dixon.resourceparser.core.util.TypeFaceUtils;
 import com.app.dixon.resourceparser.func.torr.control.TorrParseRequest;
 import com.app.dixon.resourceparser.model.TorrDetail;
 
@@ -67,6 +68,7 @@ public class TorrListAdapter extends BaseAdapter {
     private void loadView(final ViewHolder vh, int position) {
         final TorrDetail torrDetail = mList.get(position);
         vh.title.setText(torrDetail.getTitle());
+        TypeFaceUtils.yunBook(vh.title);
         if (torrDetail.isHot()) {
             vh.hot.setVisibility(View.VISIBLE);
         } else {

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#DCEDC8"
     android:orientation="vertical"
     tools:context=".func.torr.view.TorrActivity">
 
@@ -30,16 +31,16 @@
                     android:layout_width="12dp"
                     android:layout_height="12dp"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="@dimen/margin_normal"
                     android:layout_marginStart="@dimen/margin_normal"
+                    android:layout_marginLeft="@dimen/margin_normal"
                     android:src="@mipmap/ic_build" />
 
                 <TextView
                     android:id="@+id/tvTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/margin_normal"
                     android:layout_marginStart="@dimen/margin_normal"
+                    android:layout_marginLeft="@dimen/margin_normal"
                     android:gravity="center_vertical"
                     android:maxLines="1"
                     android:text="@string/torr"
@@ -60,17 +61,17 @@
             android:id="@+id/etInput"
             android:layout_width="0dp"
             android:layout_height="30dp"
-            android:layout_marginLeft="@dimen/margin_normal"
             android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginLeft="@dimen/margin_normal"
             android:layout_marginTop="@dimen/margin_normal"
             android:layout_weight="1"
             android:background="@drawable/bg_edit_text_search_torr"
             android:hint="@string/search_torr_tip"
             android:maxLines="1"
-            android:paddingEnd="@dimen/margin_normal"
-            android:paddingLeft="@dimen/margin_small"
-            android:paddingRight="@dimen/margin_normal"
             android:paddingStart="@dimen/margin_small"
+            android:paddingLeft="@dimen/margin_small"
+            android:paddingEnd="@dimen/margin_normal"
+            android:paddingRight="@dimen/margin_normal"
             android:textColor="@color/text_black"
             android:textSize="12sp" />
 
@@ -80,8 +81,8 @@
             android:layout_height="20dp"
             android:layout_gravity="center"
             android:layout_marginLeft="@dimen/margin_normal"
-            android:layout_marginRight="@dimen/margin_normal"
             android:layout_marginTop="4dp"
+            android:layout_marginRight="@dimen/margin_normal"
             android:src="@mipmap/ic_search" />
     </LinearLayout>
 
@@ -98,8 +99,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_normal"
-        android:layout_marginRight="@dimen/margin_small"
-        android:layout_marginTop="@dimen/margin_normal">
+        android:layout_marginTop="@dimen/margin_normal"
+        android:layout_marginRight="@dimen/margin_small">
 
         <TextView
             android:id="@+id/tvDownloadUrl"
@@ -121,8 +122,8 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginLeft="@dimen/margin_small"
-            android:paddingBottom="5dp"
             android:paddingTop="5dp"
+            android:paddingBottom="5dp"
             android:src="@mipmap/ic_copy" />
     </LinearLayout>
 
@@ -139,7 +140,7 @@
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_weight="1"
-            android:background="#DDD" />
+            android:background="@color/white" />
 
         <TextView
             android:id="@+id/tvVersion"
@@ -148,20 +149,22 @@
             android:layout_marginLeft="@dimen/margin_normal"
             android:layout_marginRight="@dimen/margin_normal"
             android:text="@string/source_choose_tip"
-            android:textColor="@color/back_color_gray_light"
+            android:textColor="@color/text_white"
             android:textSize="12sp" />
 
         <View
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_weight="1"
-            android:background="#DDD" />
+            android:background="@color/white" />
 
     </LinearLayout>
 
     <FrameLayout
+        android:id="@+id/flBackground"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/margin_normal">
 
         <ListView
             android:id="@+id/lvListView"

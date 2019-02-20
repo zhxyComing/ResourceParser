@@ -3,11 +3,14 @@ package com.app.dixon.resourceparser.func.torr.view;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -15,9 +18,11 @@ import android.widget.TextView;
 import com.app.dixon.resourceparser.R;
 import com.app.dixon.resourceparser.core.manager.AnalyticsManager;
 import com.app.dixon.resourceparser.core.pub.activity.BaseActivity;
+import com.app.dixon.resourceparser.core.pub.view.BackgroundDrawable;
 import com.app.dixon.resourceparser.core.util.DialogUtils;
 import com.app.dixon.resourceparser.core.util.HandlerUtils;
 import com.app.dixon.resourceparser.core.util.ToastUtils;
+import com.app.dixon.resourceparser.core.util.TypeFaceUtils;
 import com.app.dixon.resourceparser.func.torr.present.TorrPresent;
 import com.app.dixon.resourceparser.model.TorrDetail;
 import com.github.ybq.android.spinkit.SpinKitView;
@@ -33,6 +38,8 @@ public class TorrActivity extends BaseActivity implements ITorrView {
     private SpinKitView mLoadingView;
     private TorrListAdapter mAdapter;
     private TextView mDownloadUrl;
+    private FrameLayout mBack;
+    private TextView mTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,13 +77,25 @@ public class TorrActivity extends BaseActivity implements ITorrView {
             }
         });
 
-        //延迟0.5s显示dialog
+        //延迟1s显示dialog
         HandlerUtils.runOnUiThreadDelayed(new Runnable() {
             @Override
             public void run() {
                 DialogUtils.showTorrTipDialog(TorrActivity.this);
             }
-        }, 500);
+        }, 1000);
+
+        TypeFaceUtils.yunBook(mTitle);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            BackgroundDrawable drawable = BackgroundDrawable.builder()
+                    .left(75)//设置左侧斜切点的高度（取值范围是大于0，小于100）
+                    .right(90)
+//                    .topColor(Color.parseColor(topColor))//设置上半部分的颜色（默认是白色）
+                    .bottomColor(Color.parseColor("#CDDC39"))//（默认是白色）
+                    .build();
+
+            mBack.setBackground(drawable);
+        }
     }
 
     private void search() {
@@ -98,6 +117,8 @@ public class TorrActivity extends BaseActivity implements ITorrView {
         mLoadingView = findViewById(R.id.svLoadingView);
         mDownloadUrl = findViewById(R.id.tvDownloadUrl);
         mCopy = findViewById(R.id.ivCopy);
+        mBack = findViewById(R.id.flBackground);
+        mTitle = findViewById(R.id.tvTitle);
     }
 
     public static void startTorrActivity(Context context) {
@@ -152,5 +173,12 @@ public class TorrActivity extends BaseActivity implements ITorrView {
     private void copy(String url) {
         ClipboardManager cmb = (ClipboardManager) this.getSystemService(Context.CLIPBOARD_SERVICE);
         cmb.setText(url);
+    }
+
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+        finish();
+        overridePendingTransition(R.anim.activity_common_in_back, R.anim.activity_common_out_back);
     }
 }

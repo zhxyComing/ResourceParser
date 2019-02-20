@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.app.dixon.resourceparser.R;
 import com.app.dixon.resourceparser.core.util.ToastUtils;
+import com.app.dixon.resourceparser.core.util.TypeFaceUtils;
 import com.app.dixon.resourceparser.model.MovieDownload;
 
 import java.util.List;
@@ -61,6 +62,7 @@ public class DownloadListAdapter extends BaseAdapter {
     private void loadView(final ViewHolder vh, final int position) {
         final MovieDownload md = mList.get(position);
         vh.downloadUrl.setText(md.getDownloadUrl());
+        TypeFaceUtils.yunBook(vh.downloadUrl);
         vh.copy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

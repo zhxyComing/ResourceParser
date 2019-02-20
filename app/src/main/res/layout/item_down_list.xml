@@ -38,7 +38,7 @@
                 android:layout_marginLeft="@dimen/margin_normal"
                 android:layout_marginEnd="@dimen/margin_normal"
                 android:layout_marginRight="@dimen/margin_normal"
-                android:src="@mipmap/ic_copy" />
+                android:src="@mipmap/ic_copy_link" />
         </LinearLayout>
 
     </android.support.v7.widget.CardView>

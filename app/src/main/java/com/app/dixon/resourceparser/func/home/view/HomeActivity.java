@@ -3,20 +3,21 @@ package com.app.dixon.resourceparser.func.home.view;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.app.dixon.resourceparser.R;
 import com.app.dixon.resourceparser.core.pub.activity.BaseActivity;
-import com.app.dixon.resourceparser.core.pub.view.BackgroundDrawable;
 import com.app.dixon.resourceparser.core.pub.view.HorizontalListView;
 import com.app.dixon.resourceparser.core.util.TypeFaceUtils;
+import com.app.dixon.resourceparser.func.movie.recommend.view.MovieOutlineActivity;
+import com.app.dixon.resourceparser.func.set.EditActivity;
+import com.app.dixon.resourceparser.func.torr.view.TorrActivity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HomeActivity extends BaseActivity {
 
@@ -35,53 +36,53 @@ public class HomeActivity extends BaseActivity {
     public static void startHomeActivity(Context context) {
         context.startActivity(new Intent(context, HomeActivity.class));
         if (context instanceof Activity) {
-            ((Activity) context).overridePendingTransition(R.anim.activity_alpha_in, R.anim.activity_alpha_out);
+            ((Activity) context).overridePendingTransition(R.anim.activity_common_in, R.anim.activity_common_out);
         }
     }
 
     private void initView() {
-
         TypeFaceUtils.yunBook(mGoText);
 
-        View inflate = LayoutInflater.from(this).inflate(R.layout.item_home_select, null);
-        TextView tv = inflate.findViewById(R.id.tvTitle);
-        FrameLayout fl = inflate.findViewById(R.id.flBackground);
-        TypeFaceUtils.yunBook(tv);
-        setBackground(fl, 90, 75, "#FCD62D");
-        mSelectListView.addChild(inflate);
+        SelectAdapter adapter = new SelectAdapter(this, mSelectListView);
+        adapter.setList(loadItemList());
 
-        View inflate1 = LayoutInflater.from(this).inflate(R.layout.item_home_select, null);
-        TextView tv1 = inflate1.findViewById(R.id.tvTitle);
-        FrameLayout fl1 = inflate1.findViewById(R.id.flBackground);
-        TypeFaceUtils.yunBook(tv1);
-        setBackground(fl1, 75, 90, "#CDDC39");
-        mSelectListView.addChild(inflate1);
-
-        View inflate2 = LayoutInflater.from(this).inflate(R.layout.item_home_select, null);
-        TextView tv2 = inflate2.findViewById(R.id.tvTitle);
-        FrameLayout fl2 = inflate2.findViewById(R.id.flBackground);
-        TypeFaceUtils.yunBook(tv2);
-        setBackground(fl2, 90, 75, "#4fc3f7");
-        mSelectListView.addChild(inflate2);
-
-        View inflate3 = LayoutInflater.from(this).inflate(R.layout.item_home_select, null);
-        mSelectListView.addChild(inflate3);
-
+        mGoLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startTargetActivity();
+            }
+        });
     }
 
-    //将这个drawable设置给View
-    public void setBackground(View view, int left, int right, String topColor) {
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            BackgroundDrawable drawable = BackgroundDrawable.builder()
-                    .left(left)//设置左侧斜切点的高度（取值范围是大于0，小于100）
-                    .right(right)
-                    .topColor(Color.parseColor(topColor))//设置上半部分的颜色（默认是白色）
-//                    .bottomColor(Color.parseColor("#76C4EB"))//（默认是白色）
-                    .build();
-
-            view.setBackground(drawable);
+    private void startTargetActivity() {
+        switch (mSelectListView.getCurrentIndex()) {
+            case 0:
+                MovieOutlineActivity.startMovieOutlineActivity(this);
+                overridePendingTransition(R.anim.activity_common_in, R.anim.activity_common_out);
+                break;
+            case 1:
+                TorrActivity.startTorrActivity(this);
+                overridePendingTransition(R.anim.activity_common_in, R.anim.activity_common_out);
+                break;
+            case 2:
+                EditActivity.startEditActivity(this);
+                overridePendingTransition(R.anim.activity_common_in, R.anim.activity_common_out);
+                break;
         }
+    }
+
+    private List<SelectAdapter.Item> loadItemList() {
+        //修改为文件存储
+        SelectAdapter.Item movie = new SelectAdapter.Item("Find Movie", "搜电影", R.drawable.cover_movie, "#FCD62D");
+        SelectAdapter.Item magnet = new SelectAdapter.Item("Find Magnet", "搜磁力", R.drawable.cover_magnet, "#CDDC39");
+        SelectAdapter.Item set = new SelectAdapter.Item("Find Message", "信息", R.drawable.cover_message, "#4FC3F7");
+
+        List<SelectAdapter.Item> itemList = new ArrayList<>();
+        itemList.add(movie);
+        itemList.add(magnet);
+        itemList.add(set);
+
+        return itemList;
     }
 
     @Override

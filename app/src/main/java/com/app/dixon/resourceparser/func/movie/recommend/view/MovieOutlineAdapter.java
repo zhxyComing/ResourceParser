@@ -14,6 +14,7 @@ import com.app.dixon.resourceparser.R;
 import com.app.dixon.resourceparser.core.manager.ParserManager;
 import com.app.dixon.resourceparser.core.pub.view.AsyncImageView;
 import com.app.dixon.resourceparser.core.util.ToastUtils;
+import com.app.dixon.resourceparser.core.util.TypeFaceUtils;
 import com.app.dixon.resourceparser.func.movie.recommend.control.MovieDetailRequest;
 import com.app.dixon.resourceparser.model.MovieDetail;
 import com.app.dixon.resourceparser.model.MovieOutline;
@@ -66,6 +67,7 @@ public class MovieOutlineAdapter extends BaseAdapter {
     private void loadView(final ViewHolder vh, final int position) {
         final MovieOutline movie = mList.get(position);
         vh.title.setText(movie.getTitle());
+        TypeFaceUtils.yunBook(vh.title);
         vh.image.setImageBitmap(null);
         vh.error.setVisibility(View.GONE);
 

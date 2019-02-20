@@ -3,6 +3,8 @@ package com.app.dixon.resourceparser.func.movie.search.view;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 
@@ -17,6 +20,8 @@ import com.app.dixon.resourceparser.R;
 import com.app.dixon.resourceparser.core.manager.AnalyticsManager;
 import com.app.dixon.resourceparser.core.pub.Param;
 import com.app.dixon.resourceparser.core.pub.activity.BaseActivity;
+import com.app.dixon.resourceparser.core.pub.view.BackgroundDrawable;
+import com.app.dixon.resourceparser.core.util.DialogUtils;
 import com.app.dixon.resourceparser.core.util.ToastUtils;
 import com.app.dixon.resourceparser.func.movie.recommend.view.MovieOutlineAdapter;
 import com.app.dixon.resourceparser.func.movie.search.present.SearchPresent;
@@ -35,6 +40,7 @@ public class SearchActivity extends BaseActivity implements ISearchView {
     private MovieOutlineAdapter mAdapter;
     private ImageView mSearch;
     private EditText mInput;
+    private FrameLayout mBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +70,16 @@ public class SearchActivity extends BaseActivity implements ISearchView {
                 return false;
             }
         });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            BackgroundDrawable drawable = BackgroundDrawable.builder()
+                    .left(90)//设置左侧斜切点的高度（取值范围是大于0，小于100）
+                    .right(75)
+//                    .topColor(Color.parseColor(topColor))//设置上半部分的颜色（默认是白色）
+                    .bottomColor(Color.parseColor("#FCD62D"))//（默认是白色）
+                    .build();
+
+            mBack.setBackground(drawable);
+        }
     }
 
     private void search() {
@@ -91,6 +107,7 @@ public class SearchActivity extends BaseActivity implements ISearchView {
         mLoadingView = findViewById(R.id.svLoadingView);
         mSearch = findViewById(R.id.ivSearch);
         mInput = findViewById(R.id.etInput);
+        mBack = findViewById(R.id.flBackground);
     }
 
     @Override
@@ -134,7 +151,8 @@ public class SearchActivity extends BaseActivity implements ISearchView {
         //之后单独摘成一个页面中转Manager
         switch (search) {
             case Param.SPECIAL_MOVIE:
-                SpecialActivity.startSpecialActivity(this);
+//                SpecialActivity.startSpecialActivity(this);
+                DialogUtils.showSecretDialog(this);
                 return true;
             case Param.TORR_MOVIE:
                 TorrActivity.startTorrActivity(this);

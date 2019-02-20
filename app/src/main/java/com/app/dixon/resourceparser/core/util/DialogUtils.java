@@ -4,10 +4,14 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Looper;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.app.dixon.resourceparser.R;
 import com.app.dixon.resourceparser.core.pub.view.CustomDialog;
+import com.app.dixon.resourceparser.func.special.view.SpecialActivity;
 
 /**
  * Created by dixon.xu on 2018/3/22.
@@ -47,6 +51,33 @@ public class DialogUtils {
                 })
                 .build();
 
+        show(dialog);
+    }
+
+    public static void showSecretDialog(final Context context) {
+        if (!canShow(context)) {
+            return;
+        }
+        CustomDialog dialog = new CustomDialog.Builder(context)
+                .view(R.layout.dialog_secret)
+                .style(R.style.dialog)
+                .isCancelOnTouchOutSide(true)
+                .windowAnimStyle(R.style.dialogAnim)
+                .widthPx(ScreenUtils.dpToPxInt(context, 280))
+//                .heightPx(ScreenUtils.dpToPxInt(context, 196))
+                .build();
+
+        final EditText input = dialog.getView().findViewById(R.id.etPassword);
+        TextView ok = dialog.getView().findViewById(R.id.tvOk);
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String pass = input.getText().toString();
+                if (!TextUtils.isEmpty(pass) && pass.equals("dixon")) {
+                    SpecialActivity.startSpecialActivity(context);
+                }
+            }
+        });
         show(dialog);
     }
 
