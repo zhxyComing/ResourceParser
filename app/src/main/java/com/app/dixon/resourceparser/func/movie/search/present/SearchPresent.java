@@ -1,8 +1,8 @@
-package com.app.dixon.resourceparser.func.search.present;
+package com.app.dixon.resourceparser.func.movie.search.present;
 
 import com.app.dixon.resourceparser.core.manager.ParserManager;
-import com.app.dixon.resourceparser.func.search.control.SearchRequest;
-import com.app.dixon.resourceparser.func.search.view.ISearchView;
+import com.app.dixon.resourceparser.func.movie.search.control.SearchRequest;
+import com.app.dixon.resourceparser.func.movie.search.view.ISearchView;
 import com.app.dixon.resourceparser.model.MovieOutline;
 
 import java.util.List;

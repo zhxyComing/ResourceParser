@@ -1,4 +1,4 @@
-package com.app.dixon.resourceparser.func.home.view;
+package com.app.dixon.resourceparser.func.movie.recommend.view;
 
 import android.content.ClipboardManager;
 import android.content.Context;

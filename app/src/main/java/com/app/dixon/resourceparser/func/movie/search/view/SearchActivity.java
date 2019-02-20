@@ -1,4 +1,4 @@
-package com.app.dixon.resourceparser.func.search.view;
+package com.app.dixon.resourceparser.func.movie.search.view;
 
 import android.app.Activity;
 import android.content.Context;
@@ -18,8 +18,8 @@ import com.app.dixon.resourceparser.core.manager.AnalyticsManager;
 import com.app.dixon.resourceparser.core.pub.Param;
 import com.app.dixon.resourceparser.core.pub.activity.BaseActivity;
 import com.app.dixon.resourceparser.core.util.ToastUtils;
-import com.app.dixon.resourceparser.func.home.view.MovieOutlineAdapter;
-import com.app.dixon.resourceparser.func.search.present.SearchPresent;
+import com.app.dixon.resourceparser.func.movie.recommend.view.MovieOutlineAdapter;
+import com.app.dixon.resourceparser.func.movie.search.present.SearchPresent;
 import com.app.dixon.resourceparser.func.special.view.SpecialActivity;
 import com.app.dixon.resourceparser.func.torr.view.TorrActivity;
 import com.app.dixon.resourceparser.model.MovieOutline;

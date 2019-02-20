@@ -1,4 +1,4 @@
-package com.app.dixon.resourceparser.func.home.view;
+package com.app.dixon.resourceparser.func.movie.recommend.view;
 
 import com.app.dixon.resourceparser.model.MovieDownload;
 

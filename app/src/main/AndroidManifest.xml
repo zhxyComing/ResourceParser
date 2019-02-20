@@ -16,10 +16,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".func.home.view.MovieOutlineActivity"
+            android:name=".func.movie.recommend.view.MovieOutlineActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".func.search.view.SearchActivity"
+            android:name=".func.movie.search.view.SearchActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".func.special.view.SpecialActivity"
@@ -28,7 +28,7 @@
             android:name=".func.special.view.SpecialDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".func.home.view.DownloadListActivity"
+            android:name=".func.movie.recommend.view.DownloadListActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".func.start.LaunchActivity"
@@ -47,6 +47,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".func.special.view.SpecialSearchResultActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".func.home.view.HomeActivity"
             android:screenOrientation="portrait" />
     </application>
 

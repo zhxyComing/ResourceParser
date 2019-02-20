@@ -1,16 +1,13 @@
-package com.app.dixon.resourceparser.func.home.control;
+package com.app.dixon.resourceparser.func.movie.recommend.control;
 
 import android.text.TextUtils;
-import android.util.Log;
 
-import com.app.dixon.resourceparser.core.pub.parser.Action;
 import com.app.dixon.resourceparser.core.pub.parser.Action1;
 import com.app.dixon.resourceparser.core.pub.parser.ParseError;
 import com.app.dixon.resourceparser.model.MovieDetail;
 
 import org.jsoup.nodes.Document;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 

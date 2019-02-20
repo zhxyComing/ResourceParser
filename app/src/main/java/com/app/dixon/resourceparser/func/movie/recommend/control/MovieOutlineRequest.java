@@ -1,4 +1,4 @@
-package com.app.dixon.resourceparser.func.home.control;
+package com.app.dixon.resourceparser.func.movie.recommend.control;
 
 import com.app.dixon.resourceparser.core.pub.parser.Action1;
 import com.app.dixon.resourceparser.core.pub.parser.ParseError;

@@ -1,4 +1,4 @@
-package com.app.dixon.resourceparser.func.search.control;
+package com.app.dixon.resourceparser.func.movie.search.control;
 
 import com.app.dixon.resourceparser.core.pub.parser.ActionPost1;
 import com.app.dixon.resourceparser.core.pub.parser.ParseError;

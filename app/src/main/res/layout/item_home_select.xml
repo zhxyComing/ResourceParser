@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/flBackground"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="240dp">
+
+            <com.app.dixon.resourceparser.core.pub.view.CircleImageView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:src="@drawable/test"
+                app:civ_border_color="@color/white"
+                app:civ_border_width="2dp" />
+
+            <View
+                android:layout_width="20dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_horizontal|bottom"
+                android:layout_marginBottom="5dp"
+                android:background="@color/white" />
+
+            <com.app.dixon.resourceparser.core.pub.view.CircleImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_horizontal|bottom"
+                android:src="@mipmap/ic_warn"
+                app:civ_border_color="@color/white"
+                app:civ_border_width="2dp" />
+
+        </FrameLayout>
+
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.6"
+            android:gravity="bottom|center_horizontal"
+            android:text="Find Movie"
+            android:textColor="#990d47a1"
+            android:textSize="26sp" />
+
+        <TextView
+            android:id="@+id/tvTitleChinese"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.3"
+            android:gravity="center"
+            android:text="搜电影"
+            android:textColor="#990d47a1"
+            android:textSize="12sp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1.9" />
+
+    </LinearLayout>
+
+</FrameLayout>

@@ -1,4 +1,4 @@
-package com.app.dixon.resourceparser.func.home.view;
+package com.app.dixon.resourceparser.func.movie.recommend.view;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +9,7 @@ import android.widget.ListView;
 import com.app.dixon.resourceparser.R;
 import com.app.dixon.resourceparser.core.pub.activity.BaseActivity;
 import com.app.dixon.resourceparser.core.util.ToastUtils;
-import com.app.dixon.resourceparser.func.home.present.DownloadListPresent;
+import com.app.dixon.resourceparser.func.movie.recommend.present.DownloadListPresent;
 import com.app.dixon.resourceparser.model.MovieDownload;
 import com.github.ybq.android.spinkit.SpinKitView;
 
