@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">虚无之地-Find</string>
+    <string name="app_name">Find</string>
     <string name="movie">Find Movie</string>
     <string name="special">虚无之地</string>
     <string name="torr">Find Magnet</string>
@@ -7,8 +7,8 @@
     <string name="torr_tip">朝圣之地 -></string>
     <string name="load_more">更多推荐</string>
     <string name="download_url">Link</string>
-    <string name="app_name_last">无之地</string>
-    <string name="app_name_first">虚</string>
+    <string name="app_name_last">你所想</string>
+    <string name="app_name_first">搜</string>
     <string name="torr_desc">1.服务器限制,【不能在短时间内多次请求】,如解析失败请稍后重试;\n2.部分网络服务商无法链接.</string>
     <string name="download_empty_tip"> 输出下载链接</string>
     <string name="search_torr_tip"> 输入搜索内容</string>

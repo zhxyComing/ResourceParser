@@ -2,8 +2,6 @@ package com.app.dixon.resourceparser.func.movie.recommend.view;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -14,15 +12,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.app.dixon.resourceparser.R;
+import com.app.dixon.resourceparser.core.manager.theme.BackType;
+import com.app.dixon.resourceparser.core.manager.theme.ThemeManager;
 import com.app.dixon.resourceparser.core.pub.activity.BaseActivity;
-import com.app.dixon.resourceparser.core.pub.view.BackgroundDrawable;
-import com.app.dixon.resourceparser.core.pub.view.MenuView;
 import com.app.dixon.resourceparser.core.util.ToastUtils;
-import com.app.dixon.resourceparser.core.util.TypeFaceUtils;
 import com.app.dixon.resourceparser.func.movie.recommend.present.MovieOutlinePresent;
 import com.app.dixon.resourceparser.func.movie.search.view.SearchActivity;
-import com.app.dixon.resourceparser.func.set.EditActivity;
-import com.app.dixon.resourceparser.func.torr.view.TorrActivity;
 import com.app.dixon.resourceparser.model.MovieOutline;
 import com.github.ybq.android.spinkit.SpinKitView;
 
@@ -39,8 +34,6 @@ public class MovieOutlineActivity extends BaseActivity implements IMovieOutlineV
     private SpinKitView mLoadingView;
     private MovieOutlineAdapter mAdapter;
     private ImageView mSearch;
-    //    private TextView mTorr, mEdit;
-//    private MenuView mMenu;
     private TextView mTitle;
     private FrameLayout mBack;
 
@@ -63,46 +56,9 @@ public class MovieOutlineActivity extends BaseActivity implements IMovieOutlineV
             }
         });
 
-        TypeFaceUtils.yunBook(mTitle);
-
-//        initEditTip();
-//        initTorrTip();
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            BackgroundDrawable drawable = BackgroundDrawable.builder()
-                    .left(90)//设置左侧斜切点的高度（取值范围是大于0，小于100）
-                    .right(75)
-//                    .topColor(Color.parseColor(topColor))//设置上半部分的颜色（默认是白色）
-                    .bottomColor(Color.parseColor("#FCD62D"))//（默认是白色）
-                    .build();
-
-            mBack.setBackground(drawable);
-        }
+        yunBook(mTitle);
+        ThemeManager.normalBackground(BackType.LEFT, null, "#FCD62D", mBack);
     }
-
-//    private void initEditTip() {
-//        MenuView.Item item = new MenuView.Item(this);
-//        item.setText("磁力搜");
-//        item.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                TorrActivity.startTorrActivity(MovieOutlineActivity.this);
-//            }
-//        });
-//        mMenu.addItem(item);
-//    }
-//
-//    private void initTorrTip() {
-//        MenuView.Item item = new MenuView.Item(this);
-//        item.setText("设置");
-//        item.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                EditActivity.startEditActivity(MovieOutlineActivity.this);
-//            }
-//        });
-//        mMenu.addItem(item);
-//    }
 
     public static void startMovieOutlineActivity(Context context) {
         context.startActivity(new Intent(context, MovieOutlineActivity.class));
@@ -116,7 +72,6 @@ public class MovieOutlineActivity extends BaseActivity implements IMovieOutlineV
         mSearch = findViewById(R.id.ivSearch);
         mTitle = findViewById(R.id.tvTitle);
         mBack = findViewById(R.id.flBackground);
-//        mMenu = findViewById(R.id.mvMenu);
     }
 
     @Override
