@@ -12,6 +12,7 @@ import com.app.dixon.resourceparser.core.manager.theme.BackType;
 import com.app.dixon.resourceparser.core.manager.theme.ThemeManager;
 import com.app.dixon.resourceparser.core.pub.activity.BaseActivity;
 import com.app.dixon.resourceparser.core.util.FileUtils;
+import com.app.dixon.resourceparser.core.util.TypeFaceUtils;
 
 public class EditActivity extends BaseActivity {
 
@@ -34,8 +35,9 @@ public class EditActivity extends BaseActivity {
     }
 
     private void initView() {
-        String text = "虚无之地 版本" + BuildConfig.VERSION_NAME;
+        String text = "Find 版本" + BuildConfig.VERSION_NAME;
         mVersion.setText(text);
+        TypeFaceUtils.yunBook(mVersion);
 
         mUpdateDesc.setText(FileUtils.getFromAssets("update.txt", this));
 
