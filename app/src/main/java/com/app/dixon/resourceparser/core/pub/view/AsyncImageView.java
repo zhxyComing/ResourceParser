@@ -52,6 +52,12 @@ public class AsyncImageView extends android.support.v7.widget.AppCompatImageView
         return setUrl(uri != null ? uri.toString() : "");
     }
 
+    public AsyncImageView setUrl(String url, ImageLoadingFailedListener failedListener) {
+        final String imageUrl = url != null ? url : "";
+        ImageLoader.getInstance().displayImage(imageUrl, new ImageViewAware(this), mOptionsBuilder.displayer(new SimpleBitmapDisplayer()).build(), mImageSize, failedListener, mImageLoadingProgressListener);
+        return this;
+    }
+
     public AsyncImageView setUrl(String url) {
         final String imageUrl = url != null ? url : "";
         ImageLoader.getInstance().displayImage(imageUrl, new ImageViewAware(this), mOptionsBuilder.displayer(new SimpleBitmapDisplayer()).build(), mImageSize, mImageLoadingListener, mImageLoadingProgressListener);
@@ -138,6 +144,21 @@ public class AsyncImageView extends android.support.v7.widget.AppCompatImageView
 
         }
     };
+
+    public static abstract class ImageLoadingFailedListener implements ImageLoadingListener {
+        @Override
+        public void onLoadingStarted(String imageUri, View view) {
+        }
+
+        @Override
+        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+        }
+
+        @Override
+        public void onLoadingCancelled(String imageUri, View view) {
+
+        }
+    }
 
     private ImageLoadingProgressListener mImageLoadingProgressListener = new ImageLoadingProgressListener() {
         @Override

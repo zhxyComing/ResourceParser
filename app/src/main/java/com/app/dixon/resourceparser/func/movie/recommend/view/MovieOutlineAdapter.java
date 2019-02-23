@@ -18,7 +18,10 @@ import com.app.dixon.resourceparser.core.util.TypeFaceUtils;
 import com.app.dixon.resourceparser.func.movie.recommend.control.MovieDetailRequest;
 import com.app.dixon.resourceparser.model.MovieDetail;
 import com.app.dixon.resourceparser.model.MovieOutline;
+import com.nostra13.universalimageloader.core.assist.FailReason;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -78,14 +81,24 @@ public class MovieOutlineAdapter extends BaseAdapter {
             //而adapter动态获取又存在反复获取不合理因素
             //通过queue的缓存存在延迟问题
             //所以采用这种缓存机制
-            vh.image.setUrl(detail.getCoverImg());
+            vh.image.setUrl(detail.getCoverImg(), new OnRetryListener() {
+                @Override
+                void retry(String newUrl) {
+                    vh.image.setUrl(newUrl);
+                }
+            });
             vh.image.setOnLongClickListener(new ClipboardCopyListener(mContext, detail.getDownloadUrl()));
             mList.get(position).setDetailCache(detail);
         } else {
             ParserManager.queue().add(new MovieDetailRequest(movie.getTitle(), movie.getUrl(), new MovieDetailRequest.Listener() {
                 @Override
                 public void onSuccess(MovieDetail detail) {
-                    vh.image.setUrl(detail.getCoverImg());
+                    vh.image.setUrl(detail.getCoverImg(), new OnRetryListener() {
+                        @Override
+                        void retry(String newUrl) {
+                            vh.image.setUrl(newUrl);
+                        }
+                    });
                     vh.image.setOnLongClickListener(new ClipboardCopyListener(mContext, detail.getDownloadUrl()));
                     mList.get(position).setDetailCache(detail);
                 }
@@ -106,6 +119,30 @@ public class MovieOutlineAdapter extends BaseAdapter {
                 }
             }
         });
+    }
+
+    private static abstract class OnRetryListener extends AsyncImageView.ImageLoadingFailedListener {
+
+        abstract void retry(String newUrl);
+
+        @Override
+        public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+            String newUrl = parseUrl(imageUri);
+            if (!newUrl.equals(imageUri)) {
+                retry(newUrl);
+            }
+        }
+
+        private String parseUrl(String url) {
+            try {
+                URL u = new URL(url);
+                String host = u.getHost();
+                return url.replace(host, "img.18qweasd.com");
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+            return url;
+        }
     }
 
     public void notifyData(List<MovieOutline> list) {
