@@ -2,8 +2,6 @@ package com.app.dixon.resourceparser.func.movie.recommend.view;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -11,10 +9,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.app.dixon.resourceparser.R;
+import com.app.dixon.resourceparser.core.manager.theme.BackType;
+import com.app.dixon.resourceparser.core.manager.theme.ThemeManager;
 import com.app.dixon.resourceparser.core.pub.activity.BaseActivity;
-import com.app.dixon.resourceparser.core.pub.view.BackgroundDrawable;
 import com.app.dixon.resourceparser.core.util.ToastUtils;
-import com.app.dixon.resourceparser.core.util.TypeFaceUtils;
 import com.app.dixon.resourceparser.func.movie.recommend.present.DownloadListPresent;
 import com.app.dixon.resourceparser.model.MovieDownload;
 import com.github.ybq.android.spinkit.SpinKitView;
@@ -38,17 +36,8 @@ public class DownloadListActivity extends BaseActivity implements IMovieDownload
         mPresent = new DownloadListPresent(this);
         mPresent.loadData(getIntent().getStringExtra("address"));
 
-        TypeFaceUtils.yunBook(mTitle);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            BackgroundDrawable drawable = BackgroundDrawable.builder()
-                    .left(90)//设置左侧斜切点的高度（取值范围是大于0，小于100）
-                    .right(75)
-//                    .topColor(Color.parseColor(topColor))//设置上半部分的颜色（默认是白色）
-                    .bottomColor(Color.parseColor("#FCD62D"))//（默认是白色）
-                    .build();
-
-            mBack.setBackground(drawable);
-        }
+        yunBook(mTitle);
+        ThemeManager.normalBackground(BackType.LEFT, null, "#FCD62D", mBack);
     }
 
     public static void startDownloadListActivity(Context context, String address) {

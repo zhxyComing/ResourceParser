@@ -3,8 +3,6 @@ package com.app.dixon.resourceparser.func.torr.view;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -17,12 +15,12 @@ import android.widget.TextView;
 
 import com.app.dixon.resourceparser.R;
 import com.app.dixon.resourceparser.core.manager.AnalyticsManager;
+import com.app.dixon.resourceparser.core.manager.theme.BackType;
+import com.app.dixon.resourceparser.core.manager.theme.ThemeManager;
 import com.app.dixon.resourceparser.core.pub.activity.BaseActivity;
-import com.app.dixon.resourceparser.core.pub.view.BackgroundDrawable;
 import com.app.dixon.resourceparser.core.util.DialogUtils;
 import com.app.dixon.resourceparser.core.util.HandlerUtils;
 import com.app.dixon.resourceparser.core.util.ToastUtils;
-import com.app.dixon.resourceparser.core.util.TypeFaceUtils;
 import com.app.dixon.resourceparser.func.torr.present.TorrPresent;
 import com.app.dixon.resourceparser.model.TorrDetail;
 import com.github.ybq.android.spinkit.SpinKitView;
@@ -73,7 +71,7 @@ public class TorrActivity extends BaseActivity implements ITorrView {
             @Override
             public void onClick(View view) {
                 copy(mDownloadUrl.getText().toString());
-                ToastUtils.toast("已复制到剪贴板");
+                ToastUtils.toast("下载链接已复制");
             }
         });
 
@@ -85,17 +83,8 @@ public class TorrActivity extends BaseActivity implements ITorrView {
             }
         }, 1000);
 
-        TypeFaceUtils.yunBook(mTitle);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            BackgroundDrawable drawable = BackgroundDrawable.builder()
-                    .left(75)//设置左侧斜切点的高度（取值范围是大于0，小于100）
-                    .right(90)
-//                    .topColor(Color.parseColor(topColor))//设置上半部分的颜色（默认是白色）
-                    .bottomColor(Color.parseColor("#CDDC39"))//（默认是白色）
-                    .build();
-
-            mBack.setBackground(drawable);
-        }
+        yunBook(mTitle);
+        ThemeManager.normalBackground(BackType.RIGHT, null, "#CDDC39", mBack);
     }
 
     private void search() {

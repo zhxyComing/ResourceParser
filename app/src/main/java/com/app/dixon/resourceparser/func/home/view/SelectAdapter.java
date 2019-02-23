@@ -1,17 +1,17 @@
 package com.app.dixon.resourceparser.func.home.view;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.app.dixon.resourceparser.R;
-import com.app.dixon.resourceparser.core.pub.view.BackgroundDrawable;
+import com.app.dixon.resourceparser.core.manager.theme.BackType;
+import com.app.dixon.resourceparser.core.manager.theme.ThemeManager;
 import com.app.dixon.resourceparser.core.pub.view.CircleImageView;
 import com.app.dixon.resourceparser.core.pub.view.HorizontalListView;
+import com.app.dixon.resourceparser.core.util.DialogUtils;
 import com.app.dixon.resourceparser.core.util.ToastUtils;
 import com.app.dixon.resourceparser.core.util.TypeFaceUtils;
 
@@ -53,7 +53,7 @@ public class SelectAdapter {
         CircleImageView warn = itemView.findViewById(R.id.civWarn);
         FrameLayout bg = itemView.findViewById(R.id.flBackground);
 
-        Item item = mList.get(position);
+        final Item item = mList.get(position);
         title.setText(item.getTitle());
         TypeFaceUtils.yunBook(title);
         titleChinese.setText(item.getTitleChinese());
@@ -63,32 +63,23 @@ public class SelectAdapter {
         warn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtils.toast("You find nothing!");
+//                ToastUtils.toast("You find nothing!");
+                DialogUtils.showHomeTipDialog(mContext, item.getMsg());
             }
         });
     }
 
     private void setBackground(int pos, FrameLayout bg, String bgColor) {
         if ((pos & 1) == 0) {
-            setBackground(bg, 90, 75, bgColor);
+            setBackground(bg, BackType.LEFT, bgColor);
         } else {
-            setBackground(bg, 75, 90, bgColor);
+            setBackground(bg, BackType.RIGHT, bgColor);
         }
     }
 
     //将这个drawable设置给View
-    public void setBackground(View view, int left, int right, String topColor) {
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            BackgroundDrawable drawable = BackgroundDrawable.builder()
-                    .left(left)//设置左侧斜切点的高度（取值范围是大于0，小于100）
-                    .right(right)
-                    .topColor(Color.parseColor(topColor))//设置上半部分的颜色（默认是白色）
-//                    .bottomColor(Color.parseColor("#76C4EB"))//（默认是白色）
-                    .build();
-
-            view.setBackground(drawable);
-        }
+    public void setBackground(View view, BackType type, String topColor) {
+        ThemeManager.normalBackground(type, topColor, null, view);
     }
 
     public static class Item {
@@ -96,15 +87,17 @@ public class SelectAdapter {
         private String titleChinese;
         private int cover;
         private String bgColor;
+        private String msg;
 
         public Item() {
         }
 
-        public Item(String title, String titleChinese, int cover, String bgColor) {
+        public Item(String title, String titleChinese, int cover, String bgColor, String msg) {
             this.title = title;
             this.titleChinese = titleChinese;
             this.cover = cover;
             this.bgColor = bgColor;
+            this.msg = msg;
         }
 
         public String getTitle() {
@@ -137,6 +130,14 @@ public class SelectAdapter {
 
         public void setBgColor(String bgColor) {
             this.bgColor = bgColor;
+        }
+
+        public String getMsg() {
+            return msg;
+        }
+
+        public void setMsg(String msg) {
+            this.msg = msg;
         }
     }
 }

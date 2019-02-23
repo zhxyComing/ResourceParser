@@ -3,8 +3,6 @@ package com.app.dixon.resourceparser.func.movie.search.view;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -18,14 +16,14 @@ import android.widget.ImageView;
 
 import com.app.dixon.resourceparser.R;
 import com.app.dixon.resourceparser.core.manager.AnalyticsManager;
+import com.app.dixon.resourceparser.core.manager.theme.BackType;
+import com.app.dixon.resourceparser.core.manager.theme.ThemeManager;
 import com.app.dixon.resourceparser.core.pub.Param;
 import com.app.dixon.resourceparser.core.pub.activity.BaseActivity;
-import com.app.dixon.resourceparser.core.pub.view.BackgroundDrawable;
 import com.app.dixon.resourceparser.core.util.DialogUtils;
 import com.app.dixon.resourceparser.core.util.ToastUtils;
 import com.app.dixon.resourceparser.func.movie.recommend.view.MovieOutlineAdapter;
 import com.app.dixon.resourceparser.func.movie.search.present.SearchPresent;
-import com.app.dixon.resourceparser.func.special.view.SpecialActivity;
 import com.app.dixon.resourceparser.func.torr.view.TorrActivity;
 import com.app.dixon.resourceparser.model.MovieOutline;
 import com.github.ybq.android.spinkit.SpinKitView;
@@ -70,16 +68,7 @@ public class SearchActivity extends BaseActivity implements ISearchView {
                 return false;
             }
         });
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            BackgroundDrawable drawable = BackgroundDrawable.builder()
-                    .left(90)//设置左侧斜切点的高度（取值范围是大于0，小于100）
-                    .right(75)
-//                    .topColor(Color.parseColor(topColor))//设置上半部分的颜色（默认是白色）
-                    .bottomColor(Color.parseColor("#FCD62D"))//（默认是白色）
-                    .build();
-
-            mBack.setBackground(drawable);
-        }
+        ThemeManager.normalBackground(BackType.LEFT, null, "#FCD62D", mBack);
     }
 
     private void search() {
