@@ -3,31 +3,26 @@ package com.app.dixon.resourceparser.func.home.view;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.app.dixon.resourceparser.R;
-import com.app.dixon.resourceparser.core.dson.Dson;
-import com.app.dixon.resourceparser.core.dson.DsonData;
 import com.app.dixon.resourceparser.core.pub.activity.BaseActivity;
 import com.app.dixon.resourceparser.core.pub.view.HorizontalListView;
 import com.app.dixon.resourceparser.core.pub.view.ToastView;
 import com.app.dixon.resourceparser.core.util.AnimationUtils;
-import com.app.dixon.resourceparser.core.util.FileUtils;
+import com.app.dixon.resourceparser.core.util.MusicUtils;
 import com.app.dixon.resourceparser.core.util.ScreenUtils;
 import com.app.dixon.resourceparser.core.util.TypeFaceUtils;
-import com.app.dixon.resourceparser.func.movie.recommend.view.MovieOutlineActivity;
-import com.app.dixon.resourceparser.func.set.EditActivity;
-import com.app.dixon.resourceparser.func.torr.view.TorrActivity;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import com.app.dixon.resourceparser.func.home.control.HomeItemLoader;
 
 public class HomeActivity extends BaseActivity {
 
@@ -35,6 +30,7 @@ public class HomeActivity extends BaseActivity {
     private TextView mGoText;
     private LinearLayout mGoLayout;
     private ToastView mToastView;
+    private SelectAdapter mAdapter;
 
     private long mExitTime;
 
@@ -44,6 +40,22 @@ public class HomeActivity extends BaseActivity {
         setContentView(R.layout.activity_home);
 
         initView();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                ContentResolver cr = HomeActivity.this.getContentResolver();
+                StringBuffer select = new StringBuffer(" 1=1 ");
+                // 查询语句：检索出时长大于1分钟，文件大小大于1MB的媒体文件
+                select.append(" and " + MediaStore.Audio.Media.SIZE + " > " + MusicUtils.FILTER_SIZE);
+                select.append(" and " + MediaStore.Audio.Media.DURATION + " > " + MusicUtils.FILTER_DURATION);
+
+                MusicUtils.getMusicList(cr.query(uri, MusicUtils.proj_music,
+                        select.toString(), null,
+                        MediaStore.Audio.Media.ARTIST_KEY));
+            }
+        }).start();
     }
 
     public static void startHomeActivity(Context context) {
@@ -56,8 +68,8 @@ public class HomeActivity extends BaseActivity {
     private void initView() {
         TypeFaceUtils.yunBook(mGoText);
 
-        SelectAdapter adapter = new SelectAdapter(this, mSelectListView);
-        adapter.setList(loadItemList());
+        mAdapter = new SelectAdapter(this, mSelectListView);
+        mAdapter.setList(HomeItemLoader.loadItem(this));
 
         mGoLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,46 +82,13 @@ public class HomeActivity extends BaseActivity {
     }
 
     private void startTargetActivity() {
-        switch (mSelectListView.getCurrentIndex()) {
-            case 0:
-                MovieOutlineActivity.startMovieOutlineActivity(this);
-                overridePendingTransition(R.anim.activity_common_in, R.anim.activity_common_out);
-                break;
-            case 1:
-                TorrActivity.startTorrActivity(this);
-                overridePendingTransition(R.anim.activity_common_in, R.anim.activity_common_out);
-                break;
-            case 2:
-                EditActivity.startEditActivity(this);
-                overridePendingTransition(R.anim.activity_common_in, R.anim.activity_common_out);
-                break;
-        }
-    }
-
-    private List<SelectAdapter.Item> loadItemList() {
-        List<SelectAdapter.Item> itemList = new ArrayList<>();
-        String fromAssets = FileUtils.getFromAssets("home.dson", this);
+        String openPageClazz = mAdapter.getList().get(mSelectListView.getCurrentIndex()).getOpenPage();
         try {
-            List<DsonData> selects = Dson.parse(fromAssets);
-            for (int i = 0; i < selects.size(); i++) {
-                DsonData data = selects.get(i);
-                SelectAdapter.Item item = new SelectAdapter.Item(data.get("title"), data.get("titleChinese"), 0, data.get("bg"), data.get("msg"));
-                setItemCover(item, data.get("title"));
-                itemList.add(item);
-            }
-        } catch (IOException e) {
+            Class<?> aClass = getClassLoader().loadClass(openPageClazz);
+            startActivity(new Intent(HomeActivity.this, aClass));
+            overridePendingTransition(R.anim.activity_common_in, R.anim.activity_common_out);
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        }
-        return itemList;
-    }
-
-    private void setItemCover(SelectAdapter.Item item, String title) {
-        if (title.contains("Movie")) {
-            item.setCover(R.drawable.cover_movie);
-        } else if (title.contains("Magnet")) {
-            item.setCover(R.drawable.cover_magnet);
-        } else if (title.contains("Message")) {
-            item.setCover(R.drawable.cover_message);
         }
     }
 
