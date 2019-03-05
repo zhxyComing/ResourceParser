@@ -52,6 +52,12 @@
         <activity
             android:name=".func.home.view.HomeActivity"
             android:screenOrientation="portrait" />
+
+        <service
+            android:name=".func.music.service.MusicManagerService"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":music" />
     </application>
 
 </manifest>

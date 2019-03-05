@@ -126,6 +126,26 @@ public class DialogUtils {
         show(dialog);
     }
 
+    public static void showHomeTipDialog(Context context, String text, View.OnClickListener clickListener) {
+        if (!canShow(context)) {
+            return;
+        }
+        CustomDialog dialog = new CustomDialog.Builder(context)
+                .view(R.layout.dialog_home_tip)
+                .style(R.style.dialog)
+                .isCancelOnTouchOutSide(true)
+                .windowAnimStyle(R.style.dialogAnim)
+                .widthPx(ScreenUtils.dpToPxInt(context, 280))
+//                .heightPx(ScreenUtils.dpToPxInt(context, 196))
+                .addViewOnClick(R.id.tvOk, clickListener)
+                .build();
+
+        TextView tip = dialog.getView().findViewById(R.id.tvTip);
+        tip.setText(text);
+
+        show(dialog);
+    }
+
     private static void show(Dialog dialog) {
         if (dialog != null) {
             dialog.show();

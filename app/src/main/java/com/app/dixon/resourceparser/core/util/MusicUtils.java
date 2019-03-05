@@ -1,23 +1,30 @@
 package com.app.dixon.resourceparser.core.util;
 
-import android.Manifest;
+import android.content.ContentResolver;
+import android.content.Context;
 import android.database.Cursor;
-import android.os.Build;
+import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
 
-import com.app.dixon.resourceparser.core.pub.inter.IPermission;
+import com.app.dixon.resourceparser.model.MusicInfo;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by dixon.xu on 2019/3/1.
+ * <p>
+ * 查询本机音乐信息
  */
 
-public class MusicUtils extends IPermission {
+public class MusicUtils {
 
-    public static final int FILTER_SIZE = 1 * 1024 * 1024;// 1MB
-    public static final int FILTER_DURATION = 1 * 60 * 1000;// 1分钟
+    private static final String TAG = "music_utils";
+
+    public static final int FILTER_SIZE = 1024 * 1024;// 1MB
+    public static final int FILTER_DURATION = 60 * 1000;// 1分钟
 
     public static String[] proj_music = new String[]{
             MediaStore.Audio.Media._ID, MediaStore.Audio.Media.TITLE,
@@ -25,12 +32,11 @@ public class MusicUtils extends IPermission {
             MediaStore.Audio.Media.ARTIST, MediaStore.Audio.Media.ARTIST_ID,
             MediaStore.Audio.Media.DURATION};
 
-    private static final String TAG = "testkkk";
-
     // 音乐检索方法
-    public static void getMusicList(Cursor cursor) {
+    public static List<MusicInfo> getMusicList(Cursor cursor) {
+        List<MusicInfo> infos = new ArrayList<>();
         if (cursor == null) {
-            return;
+            return infos;
         }
 
         while (cursor.moveToNext()) {
@@ -55,26 +61,46 @@ public class MusicUtils extends IPermission {
             String folderPath = filePath.substring(0,
                     filePath.lastIndexOf(File.separator));
             Log.e(TAG, "folderPath " + folderPath);
+
+            MusicInfo info = new MusicInfo(songId, albumId, duration, musicName, artist, filePath, folderPath);
+            infos.add(info);
         }
         cursor.close();
+        return infos;
     }
 
-    @Override
-    protected void onRefusedPermission() {
-        //弹窗
+    //代理限定好条件，并直接调用utils。业务方直接使用proxy可以省略具体的查询条件与跨线程的查询操作。
+    public static class Proxy {
 
-    }
-
-    @Override
-    protected String askPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            return Manifest.permission.READ_EXTERNAL_STORAGE;
+        public interface OnQueryResultListener {
+            void onComplete(List<MusicInfo> infos);
         }
-        return "";
-    }
 
-    @Override
-    public void requestResult(int requestCode, String[] permissions, int[] grantResults) {
+        public static void queryMusicOnPhone(final Context context, final OnQueryResultListener listener) {
+            //子线程检索
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    //限定检索条件
+                    Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                    ContentResolver cr = context.getContentResolver();
+                    String select = " 1=1 " + " and " + MediaStore.Audio.Media.SIZE + " > " + MusicUtils.FILTER_SIZE +
+                            " and " + MediaStore.Audio.Media.DURATION + " > " + MusicUtils.FILTER_DURATION;
+                    // 查询语句：检索出时长大于1分钟，文件大小大于1MB的媒体文件
 
+                    final List<MusicInfo> infos = MusicUtils.getMusicList(cr.query(uri, MusicUtils.proj_music,
+                            select, null,
+                            MediaStore.Audio.Media.ARTIST_KEY));
+
+                    //检索完毕回归主线程
+                    HandlerUtils.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            listener.onComplete(infos);
+                        }
+                    });
+                }
+            }).start();
+        }
     }
 }

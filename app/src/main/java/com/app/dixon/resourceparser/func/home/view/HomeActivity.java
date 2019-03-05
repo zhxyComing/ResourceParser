@@ -1,30 +1,41 @@
 package com.app.dixon.resourceparser.func.home.view;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
-import android.content.ContentResolver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
+import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.os.IBinder;
+import android.os.RemoteException;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.app.dixon.resourceparser.ICompleteCallback;
+import com.app.dixon.resourceparser.IMusicManagerService;
 import com.app.dixon.resourceparser.R;
 import com.app.dixon.resourceparser.core.pub.activity.BaseActivity;
 import com.app.dixon.resourceparser.core.pub.view.HorizontalListView;
 import com.app.dixon.resourceparser.core.pub.view.ToastView;
 import com.app.dixon.resourceparser.core.util.AnimationUtils;
-import com.app.dixon.resourceparser.core.util.MusicUtils;
+import com.app.dixon.resourceparser.core.util.DialogUtils;
+import com.app.dixon.resourceparser.core.util.HandlerUtils;
 import com.app.dixon.resourceparser.core.util.ScreenUtils;
 import com.app.dixon.resourceparser.core.util.TypeFaceUtils;
 import com.app.dixon.resourceparser.func.home.control.HomeItemLoader;
+import com.app.dixon.resourceparser.func.music.service.MusicManagerService;
 
-public class HomeActivity extends BaseActivity {
+
+public class HomeActivity extends BaseActivity implements ServiceConnection {
 
     private HorizontalListView mSelectListView;
     private TextView mGoText;
@@ -34,28 +45,18 @@ public class HomeActivity extends BaseActivity {
 
     private long mExitTime;
 
+    private static final int PERMISSION_ASK_READ_SD = 1000;
+
+    private IMusicManagerService mMms;
+    private boolean isMmsReady = false; //mms是否初始化完毕
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
         initView();
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-                ContentResolver cr = HomeActivity.this.getContentResolver();
-                StringBuffer select = new StringBuffer(" 1=1 ");
-                // 查询语句：检索出时长大于1分钟，文件大小大于1MB的媒体文件
-                select.append(" and " + MediaStore.Audio.Media.SIZE + " > " + MusicUtils.FILTER_SIZE);
-                select.append(" and " + MediaStore.Audio.Media.DURATION + " > " + MusicUtils.FILTER_DURATION);
-
-                MusicUtils.getMusicList(cr.query(uri, MusicUtils.proj_music,
-                        select.toString(), null,
-                        MediaStore.Audio.Media.ARTIST_KEY));
-            }
-        }).start();
+        initData();
     }
 
     public static void startHomeActivity(Context context) {
@@ -67,18 +68,60 @@ public class HomeActivity extends BaseActivity {
 
     private void initView() {
         TypeFaceUtils.yunBook(mGoText);
-
         mAdapter = new SelectAdapter(this, mSelectListView);
         mAdapter.setList(HomeItemLoader.loadItem(this));
-
         mGoLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startTargetActivity();
             }
         });
-
         initToastCard();
+    }
+
+    private void initData() {
+        queryMusic();
+    }
+
+    private void queryMusic() {
+        if (!checkReadPermission()) {
+            return;
+        }
+        realQueryMusic();
+    }
+
+    private void realQueryMusic() {
+        startService(new Intent(HomeActivity.this, MusicManagerService.class));
+        bindService(new Intent(HomeActivity.this, MusicManagerService.class), this, BIND_AUTO_CREATE);
+    }
+
+    private boolean checkReadPermission() {
+        //低于16默认有权限
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+            return true;
+        }
+        int permissionCheck = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE);
+        if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
+            //有权限
+            return true;
+        }
+        //没权限 延迟1s弹出
+
+        HandlerUtils.runOnUiThreadDelayed(new Runnable() {
+            @Override
+            public void run() {
+                DialogUtils.showHomeTipDialog(HomeActivity.this, getString(R.string.read_permission_tip), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                            ActivityCompat.requestPermissions(HomeActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_ASK_READ_SD);
+                        }
+                    }
+                });
+            }
+        }, 1000);
+        return false;
     }
 
     private void startTargetActivity() {
@@ -142,5 +185,54 @@ public class HomeActivity extends BaseActivity {
                         }).start();
             }
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        if (requestCode == PERMISSION_ASK_READ_SD) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                realQueryMusic();
+            }
+        }
+    }
+
+    /**
+     * 通信顺序:@主进程 -> MusicManagerService -> MusicManager
+     */
+    @Override
+    public void onServiceConnected(ComponentName name, IBinder service) {
+        initMusicManagerService(service);
+    }
+
+    //初始化mms 初始化成功后会即可获取音乐列表 播放音乐等等
+    private void initMusicManagerService(IBinder service) {
+        mMms = IMusicManagerService.Stub.asInterface(service);
+        try {
+            mMms.init(new ICompleteCallback.Stub() {
+                @Override
+                public void onComplete() throws RemoteException {
+                    isMmsReady = true;
+                    initMusicListView();
+                }
+            });
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void initMusicListView() {
+        //TODO 加载音乐列表 并初始化隐藏布局
+    }
+
+    @Override
+    public void onServiceDisconnected(ComponentName name) {
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbindService(this);
     }
 }

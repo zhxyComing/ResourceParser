@@ -17,4 +17,5 @@
     <string name="torr_search">全网搜索</string>
     <string name="more_home_tip">更多</string>
     <string name="source_choose_tip">选择数据源以解析</string>
+    <string name="read_permission_tip">Find需要SD卡读取权限以获取本机音乐信息，点击OK给予权限。</string>
 </resources>
