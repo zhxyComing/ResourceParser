@@ -63,4 +63,23 @@
         app:cardCornerRadius="5dp"
         app:cardElevation="6dp" />
 
+    <TextView
+        android:id="@+id/test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="#FFFFFF"
+        android:padding="10dp"
+        android:text="test" />
+
+    <com.app.dixon.resourceparser.core.pub.view.FootScrollView
+        android:layout_width="match_parent"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_height="200dp"
+        android:layout_gravity="bottom"
+        android:background="#FFFFFF"
+        app:cardElevation="2dp"
+        app:cardCornerRadius="0dp"/>
+
 </FrameLayout>

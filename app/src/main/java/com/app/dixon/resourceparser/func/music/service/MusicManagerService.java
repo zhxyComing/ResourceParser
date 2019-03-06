@@ -16,6 +16,8 @@ import java.util.List;
  * 运行在:music进程，负责链接主进程与MusicManager
  * <p>
  * 通信顺序:主进程 -> @MusicManagerService -> MusicManager
+ * <p>
+ * 主进程与Service建立Binder连接，进而与MusicManager通信
  */
 
 public class MusicManagerService extends Service {
@@ -42,7 +44,7 @@ public class MusicManagerService extends Service {
      * 该Binder的接口用于与MusicManager通信。
      * <p>
      * 需要注意：MMS的启动初始化操作有一些是异步操作，如获取本机的音乐列表。
-     * 所以业务方bind成功第一时间获取MusicInfos可能存在列表为空的情况，暂时没想到更好的解决方式。
+     * 所以业务方bind成功第一时间获取MusicInfos可能为空。
      */
     private final IMusicManagerService.Stub mBinder = new IMusicManagerService.Stub() {
         @Override
@@ -54,6 +56,11 @@ public class MusicManagerService extends Service {
         @Override
         public void init(ICompleteCallback cb) throws RemoteException {
             MusicManager.init(MusicManagerService.this, cb);
+        }
+
+        @Override
+        public void play(String path) throws RemoteException {
+            MusicManager.play(path);
         }
     };
 }

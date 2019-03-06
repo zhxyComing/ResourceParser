@@ -15,4 +15,6 @@ interface IMusicManagerService {
      * MusicManager不会自己去获取音乐列表 需要业务方手动调用init初始化 初始化complete后可以获取到音乐列表
      */
     void init(ICompleteCallback cb);
+
+    void play(String path);
 }

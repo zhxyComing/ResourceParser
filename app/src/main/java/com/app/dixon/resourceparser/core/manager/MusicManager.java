@@ -1,12 +1,14 @@
 package com.app.dixon.resourceparser.core.manager;
 
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.os.RemoteException;
 
 import com.app.dixon.resourceparser.ICompleteCallback;
 import com.app.dixon.resourceparser.core.util.MusicUtils;
 import com.app.dixon.resourceparser.model.MusicInfo;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +23,7 @@ import java.util.List;
 public class MusicManager {
 
     private static List<MusicInfo> mMusicInfos = new ArrayList<>();
+    private static MediaPlayer mPlayer = new MediaPlayer();
 
     //MusicManager的初始化操作
     public static void init(Context context, final ICompleteCallback callback) {
@@ -40,5 +43,21 @@ public class MusicManager {
 
     public static List<MusicInfo> getMusicInfos() {
         return mMusicInfos;
+    }
+
+    public static void play(String path) {
+        mPlayer.reset();
+        try {
+            mPlayer.setDataSource(path);//设置播放mp3文件的路径
+            mPlayer.prepare();//播放准备
+            mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mediaPlayer) {
+                    mPlayer.start();//播放开始
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
