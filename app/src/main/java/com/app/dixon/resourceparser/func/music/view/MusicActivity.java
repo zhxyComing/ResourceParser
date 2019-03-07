@@ -15,11 +15,13 @@ import android.util.Log;
 import android.view.View;
 
 import com.app.dixon.resourceparser.ICompleteCallback;
+import com.app.dixon.resourceparser.IMusicChangedCallback;
 import com.app.dixon.resourceparser.IMusicManagerService;
 import com.app.dixon.resourceparser.R;
 import com.app.dixon.resourceparser.core.pub.activity.BaseActivity;
 import com.app.dixon.resourceparser.core.util.DialogUtils;
 import com.app.dixon.resourceparser.core.util.HandlerUtils;
+import com.app.dixon.resourceparser.func.music.control.MusicLocalManager;
 import com.app.dixon.resourceparser.func.music.service.MusicManagerService;
 
 /**
@@ -69,6 +71,7 @@ public abstract class MusicActivity extends BaseActivity implements ServiceConne
                     HandlerUtils.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            MusicLocalManager.initReadyService(mMusicManagerService);
                             onMusicManagerReady();
                         }
                     });
@@ -131,5 +134,6 @@ public abstract class MusicActivity extends BaseActivity implements ServiceConne
     protected void onDestroy() {
         super.onDestroy();
         unbindService(this);
+        MusicLocalManager.destroy();
     }
 }

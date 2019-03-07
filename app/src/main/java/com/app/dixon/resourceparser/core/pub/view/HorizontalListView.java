@@ -344,7 +344,7 @@ public class HorizontalListView extends LinearLayout {
                 float nowY = ev.getRawY();
                 float disY = nowY - interLastY;
 
-                if (disX < -5 || disX > 5 || disY < -5 || disY > 5) {
+                if (disX < -25 || disX > 25 || disY < -25 || disY > 25) {
                     interLastX = nowX;
                     interLastY = nowY;
                     return true;

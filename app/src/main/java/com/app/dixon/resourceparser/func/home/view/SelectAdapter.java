@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.app.dixon.resourceparser.R;
@@ -12,7 +13,9 @@ import com.app.dixon.resourceparser.core.manager.theme.ThemeManager;
 import com.app.dixon.resourceparser.core.pub.view.CircleImageView;
 import com.app.dixon.resourceparser.core.pub.view.HorizontalListView;
 import com.app.dixon.resourceparser.core.util.DialogUtils;
+import com.app.dixon.resourceparser.core.util.ToastUtils;
 import com.app.dixon.resourceparser.core.util.TypeFaceUtils;
+import com.app.dixon.resourceparser.func.music.control.MusicLocalManager;
 
 import java.util.List;
 
@@ -21,6 +24,8 @@ public class SelectAdapter {
     private Context mContext;
     private HorizontalListView mListView;
     private List<Item> mList;
+
+    private OnMusicChangedListener mChangedListener;
 
     public SelectAdapter(Context context, HorizontalListView listView) {
         this.mContext = context;
@@ -84,12 +89,49 @@ public class SelectAdapter {
         CircleImageView cover = itemView.findViewById(R.id.civCover);
         CircleImageView warn = itemView.findViewById(R.id.civWarn);
         FrameLayout bg = itemView.findViewById(R.id.flBackground);
+        ImageView playPre = itemView.findViewById(R.id.ivPlayPre);
+        final ImageView play = itemView.findViewById(R.id.ivPlay);
+        ImageView playNext = itemView.findViewById(R.id.ivPlayNext);
 
         final Item item = mList.get(position);
         title.setText(item.getTitle());
         TypeFaceUtils.yunBook(title);
         cover.setImageResource(item.getCover());
         setBackground(position, bg, item.getBgColor());
+
+        //播放按钮
+        initPlayBtn(play);
+        play.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (MusicLocalManager.isPlaying()) {
+                    MusicLocalManager.pause();
+                    play.setImageResource(R.mipmap.ic_play);
+                } else {
+                    MusicLocalManager.resumePlay();
+                    play.setImageResource(R.mipmap.ic_playing);
+                }
+            }
+        });
+
+        playPre.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!MusicLocalManager.playPre()) {
+                    ToastUtils.toast("到头了～");
+                }
+            }
+        });
+
+        playNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!MusicLocalManager.playNext()) {
+                    ToastUtils.toast("到头了～");
+                }
+            }
+        });
+
 
         warn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,6 +140,22 @@ public class SelectAdapter {
                 DialogUtils.showHomeTipDialog(mContext, item.getMsg());
             }
         });
+
+        //只要播放音乐 就设定图标为播放
+        setMusicChangedListener(new OnMusicChangedListener() {
+            @Override
+            public void onChanged() {
+                play.setImageResource(R.mipmap.ic_playing);
+            }
+        });
+    }
+
+    private void initPlayBtn(ImageView play) {
+        if (MusicLocalManager.isPlaying()) {
+            play.setImageResource(R.mipmap.ic_playing);
+        } else {
+            play.setImageResource(R.mipmap.ic_play);
+        }
     }
 
     private void setBackground(int pos, FrameLayout bg, String bgColor) {
@@ -209,5 +267,17 @@ public class SelectAdapter {
         public void setOpenPage(String openPage) {
             this.openPage = openPage;
         }
+    }
+
+    public interface OnMusicChangedListener {
+        void onChanged();
+    }
+
+    public OnMusicChangedListener getMusicChangedListener() {
+        return mChangedListener;
+    }
+
+    private void setMusicChangedListener(OnMusicChangedListener changedListener) {
+        this.mChangedListener = changedListener;
     }
 }

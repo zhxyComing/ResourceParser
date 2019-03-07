@@ -138,4 +138,15 @@ public class MusicInfo implements Parcelable {
         dest.writeString(filePath);
         dest.writeString(folderPath);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        MusicInfo info = (MusicInfo) o;
+
+        if (songId != info.songId) return false;
+        return filePath != null ? filePath.equals(info.filePath) : info.filePath == null;
+    }
 }

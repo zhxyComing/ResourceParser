@@ -4,6 +4,7 @@ package com.app.dixon.resourceparser;
 // Declare any non-default types here with import statements
 import com.app.dixon.resourceparser.model.MusicInfo;
 import com.app.dixon.resourceparser.ICompleteCallback;
+import com.app.dixon.resourceparser.IMusicChangedCallback;
 
 interface IMusicManagerService {
     /**
@@ -16,5 +17,21 @@ interface IMusicManagerService {
      */
     void init(ICompleteCallback cb);
 
-    void play(String path);
+    void play(in MusicInfo info);
+
+    MusicInfo getPlayingMusic();
+
+    void setOnMusicChangedListener(IMusicChangedCallback cb);
+
+    void playBySeek(in MusicInfo info, int seek);
+
+    boolean isPlaying();
+
+    void pause();
+
+    boolean resumePlay();
+
+    boolean playNext();
+
+    boolean playPre();
 }

@@ -6,6 +6,7 @@ import android.os.IBinder;
 import android.os.RemoteException;
 
 import com.app.dixon.resourceparser.ICompleteCallback;
+import com.app.dixon.resourceparser.IMusicChangedCallback;
 import com.app.dixon.resourceparser.IMusicManagerService;
 import com.app.dixon.resourceparser.core.manager.MusicManager;
 import com.app.dixon.resourceparser.model.MusicInfo;
@@ -59,8 +60,48 @@ public class MusicManagerService extends Service {
         }
 
         @Override
-        public void play(String path) throws RemoteException {
-            MusicManager.play(path);
+        public void play(MusicInfo info) throws RemoteException {
+            MusicManager.play(info);
+        }
+
+        @Override
+        public MusicInfo getPlayingMusic() throws RemoteException {
+            return MusicManager.getPlayingMusic();
+        }
+
+        @Override
+        public void setOnMusicChangedListener(IMusicChangedCallback cb) throws RemoteException {
+            MusicManager.setMusicChangedCallback(cb);
+        }
+
+        @Override
+        public void playBySeek(MusicInfo info, int seek) throws RemoteException {
+            MusicManager.play(info, seek);
+        }
+
+        @Override
+        public boolean isPlaying() throws RemoteException {
+            return MusicManager.isPlaying();
+        }
+
+        @Override
+        public void pause() throws RemoteException {
+            MusicManager.pause();
+        }
+
+        @Override
+        public boolean resumePlay() throws RemoteException {
+            return MusicManager.resumePlay();
+        }
+
+        @Override
+        public boolean playNext() throws RemoteException {
+            return MusicManager.playNext();
+        }
+
+        @Override
+        public boolean playPre() throws RemoteException {
+            return MusicManager.playPre();
         }
     };
 }
