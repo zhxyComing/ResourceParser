@@ -4,9 +4,11 @@ import android.os.RemoteException;
 
 import com.app.dixon.resourceparser.IMusicChangedCallback;
 import com.app.dixon.resourceparser.IMusicManagerService;
+import com.app.dixon.resourceparser.model.MusicAlbum;
 import com.app.dixon.resourceparser.model.MusicInfo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by dixon.xu on 2019/3/7.
@@ -48,6 +50,18 @@ public class MusicLocalManager {
         }
         try {
             return readyService.getMusicInfos();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static Map<Integer, MusicAlbum> getMusicAlbums() {
+        if (readyService == null) {
+            return null;
+        }
+        try {
+            return readyService.getMusicAlbums();
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -141,5 +155,27 @@ public class MusicLocalManager {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public static void startProgress() {
+        if (readyService == null) {
+            return;
+        }
+        try {
+            readyService.startProgress();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void stopProgress() {
+        if (readyService == null) {
+            return;
+        }
+        try {
+            readyService.stopProgress();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -27,28 +27,28 @@
             android:layout_weight="2.5" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/llGo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="@dimen/margin_large"
-        android:orientation="vertical"
-        android:padding="20dp">
+    <!--<LinearLayout-->
+        <!--android:id="@+id/llGo"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="bottom|center_horizontal"-->
+        <!--android:layout_marginBottom="@dimen/margin_large"-->
+        <!--android:orientation="vertical"-->
+        <!--android:padding="20dp">-->
 
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginBottom="@dimen/margin_normal"
-            android:src="@mipmap/ic_arrow_down" />
+        <!--<ImageView-->
+            <!--android:layout_width="20dp"-->
+            <!--android:layout_height="20dp"-->
+            <!--android:layout_marginBottom="@dimen/margin_normal"-->
+            <!--android:src="@mipmap/ic_arrow_down" />-->
 
-        <TextView
-            android:id="@+id/tvGo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="GO"
-            android:textColor="#1976d2" />
-    </LinearLayout>
+        <!--<TextView-->
+            <!--android:id="@+id/tvGo"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="GO"-->
+            <!--android:textColor="#1976d2" />-->
+    <!--</LinearLayout>-->
 
     <com.app.dixon.resourceparser.core.pub.view.ToastView
         android:id="@+id/toastCard"
@@ -62,64 +62,5 @@
         app:cardBackgroundColor="#666666"
         app:cardCornerRadius="5dp"
         app:cardElevation="6dp" />
-
-    <com.app.dixon.resourceparser.core.pub.view.FootScrollView
-        android:id="@+id/fsvMusicListLayout"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_gravity="bottom"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="5dp"
-        app:cardElevation="2dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/ivFile"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_margin="@dimen/margin_normal"
-                    android:src="@mipmap/ic_file" />
-
-                <TextView
-                    android:id="@+id/tvMusicTitle"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="本地 Music"
-                    android:textColor="@color/text_black" />
-
-                <ImageView
-                    android:id="@+id/ivHide"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_margin="@dimen/margin_normal"
-                    android:src="@mipmap/ic_arrow_hide" />
-
-            </LinearLayout>
-
-            <ListView
-                android:id="@+id/lvMusicList"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:divider="@null"
-                android:scrollbars="none" />
-
-        </LinearLayout>
-
-    </com.app.dixon.resourceparser.core.pub.view.FootScrollView>
 
 </FrameLayout>

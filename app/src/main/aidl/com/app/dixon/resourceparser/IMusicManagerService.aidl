@@ -3,6 +3,7 @@ package com.app.dixon.resourceparser;
 
 // Declare any non-default types here with import statements
 import com.app.dixon.resourceparser.model.MusicInfo;
+import com.app.dixon.resourceparser.model.MusicAlbum;
 import com.app.dixon.resourceparser.ICompleteCallback;
 import com.app.dixon.resourceparser.IMusicChangedCallback;
 
@@ -12,12 +13,19 @@ interface IMusicManagerService {
      */
     List<MusicInfo> getMusicInfos();
 
+    //这里带数据类型无法编译...擦
+    Map getMusicAlbums();
+
     /**
      * MusicManager不会自己去获取音乐列表 需要业务方手动调用init初始化 初始化complete后可以获取到音乐列表
      */
     void init(ICompleteCallback cb);
 
     void play(in MusicInfo info);
+
+    void startProgress();
+
+    void stopProgress();
 
     MusicInfo getPlayingMusic();
 

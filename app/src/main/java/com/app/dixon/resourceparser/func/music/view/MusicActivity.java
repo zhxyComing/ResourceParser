@@ -110,7 +110,7 @@ public abstract class MusicActivity extends BaseActivity implements ServiceConne
                     @Override
                     public void onClick(View v) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                            ActivityCompat.requestPermissions(MusicActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_ASK_READ_SD);
+                            ActivityCompat.requestPermissions(MusicActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE,}, PERMISSION_ASK_READ_SD);
                         }
                     }
                 });

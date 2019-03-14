@@ -1,15 +1,25 @@
 package com.app.dixon.resourceparser.core.util;
 
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.util.Log;
 
+import com.app.dixon.resourceparser.R;
 import com.app.dixon.resourceparser.model.MusicInfo;
 
 import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,5 +112,49 @@ public class MusicUtils {
                 }
             }).start();
         }
+    }
+
+    private static final Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
+
+    //获取音乐封面
+    public static Bitmap  getMusicBitemp(Context context, long songId, long albumId) {
+        Bitmap bm = null;
+        // 专辑id和歌曲id小于0说明没有专辑、歌曲，并抛出异常
+        if (albumId < 0 && songId < 0) {
+            throw new IllegalArgumentException(
+                    "Must specify an album or a song id");
+        }
+        try {
+            if (albumId < 0) {
+                Uri uri = Uri.parse("content://media/external/audio/media/"
+                        + songId + "/albumart");
+                ParcelFileDescriptor pfd = context.getContentResolver().openFileDescriptor(uri, "r");
+                if (pfd != null) {
+                    FileDescriptor fd = pfd.getFileDescriptor();
+                    bm = BitmapFactory.decodeFileDescriptor(fd);
+                }
+            } else {
+                Uri uri = ContentUris.withAppendedId(sArtworkUri, albumId);
+                ParcelFileDescriptor pfd = context.getContentResolver()
+                        .openFileDescriptor(uri, "r");
+                if (pfd != null) {
+                    FileDescriptor fd = pfd.getFileDescriptor();
+                    bm = BitmapFactory.decodeFileDescriptor(fd);
+                } else {
+                    return null;
+                }
+            }
+        } catch (FileNotFoundException ex) {
+        }
+        //如果获取的bitmap为空，则返回一个默认的bitmap
+        if (bm == null) {
+            Resources resources = context.getResources();
+            Drawable drawable = resources.getDrawable(R.drawable.cover_music);
+            //Drawable 转 Bitmap
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+            bm = bitmapDrawable.getBitmap();
+        }
+
+        return Bitmap.createScaledBitmap(bm, 600, 600, true);
     }
 }

@@ -56,7 +56,7 @@ public class HorizontalListView extends LinearLayout {
         offsetX = -dpToPx(getContext(), margin);
     }
 
-//    private int margin = 24;
+    //    private int margin = 24;
     private int margin = 0;
 
     private void init() {
@@ -344,7 +344,7 @@ public class HorizontalListView extends LinearLayout {
                 float nowY = ev.getRawY();
                 float disY = nowY - interLastY;
 
-                if (disX < -25 || disX > 25 || disY < -25 || disY > 25) {
+                if ((disX < -25 || disX > 25) && Math.abs(disX) > Math.abs(disY)) {
                     interLastX = nowX;
                     interLastY = nowY;
                     return true;

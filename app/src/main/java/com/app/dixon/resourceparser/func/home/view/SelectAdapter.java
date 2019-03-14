@@ -1,38 +1,29 @@
 package com.app.dixon.resourceparser.func.home.view;
 
 import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.app.dixon.resourceparser.R;
 import com.app.dixon.resourceparser.core.manager.theme.BackType;
 import com.app.dixon.resourceparser.core.manager.theme.ThemeManager;
-import com.app.dixon.resourceparser.core.pub.view.CircleImageView;
 import com.app.dixon.resourceparser.core.pub.view.HorizontalListView;
-import com.app.dixon.resourceparser.core.util.DialogUtils;
-import com.app.dixon.resourceparser.core.util.ToastUtils;
-import com.app.dixon.resourceparser.core.util.TypeFaceUtils;
-import com.app.dixon.resourceparser.func.music.control.MusicLocalManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SelectAdapter {
 
     private Context mContext;
     private HorizontalListView mListView;
-    private List<Item> mList;
-
-    private OnMusicChangedListener mChangedListener;
+    private List<ItemModel> mList;
+    private List<SelectItem> mCache;
 
     public SelectAdapter(Context context, HorizontalListView listView) {
         this.mContext = context;
         this.mListView = listView;
+        this.mCache = new ArrayList<>();
     }
 
-    public void setList(List<Item> list) {
+    public void setList(List<ItemModel> list) {
         if (mList == null) {
             mList = list;
         } else {
@@ -42,136 +33,45 @@ public class SelectAdapter {
     }
 
     private void notifyData() {
+        mCache.clear();
         mListView.removeAllViews();
         for (int i = 0; i < mList.size(); i++) {
-            Item.Type type = mList.get(i).getType();
-            if (type == Item.Type.NORMAL) {
-                View itemView = LayoutInflater.from(mContext).inflate(R.layout.item_home_select, null);
-                initNormalView(i, itemView);
-                mListView.addChild(itemView);
-            } else if (type == Item.Type.MUSIC) {
-                View itemView = LayoutInflater.from(mContext).inflate(R.layout.item_home_music, null);
-                initMusicView(i, itemView);
-                mListView.addChild(itemView);
+            ItemModel model = mList.get(i);
+            SelectItem item;
+            switch (model.getType()) {
+                case MUSIC:
+                    item = new MusicSelect(mContext, model);
+                    break;
+                case NORMAL:
+                    item = new NormalSelect(mContext, model);
+                    break;
+                default://异常情况 数据错误
+                    item = new NormalSelect(mContext, model);
+                    break;
             }
+            mListView.addChild(item.getView());
+            //统一设置背景
+            ThemeManager.normalBackground((i & 1) == 0 ? BackType.LEFT : BackType.RIGHT,
+                    model.getBgColor(),
+                    null,
+                    item.getBackgroundView());
+            mCache.add(item);
         }
     }
 
-    public List<Item> getList() {
+    public List<ItemModel> getList() {
         return mList;
     }
 
-    private void initNormalView(int position, View itemView) {
-        TextView title = itemView.findViewById(R.id.tvTitle);
-        TextView titleChinese = itemView.findViewById(R.id.tvTitleChinese);
-        CircleImageView cover = itemView.findViewById(R.id.civCover);
-        CircleImageView warn = itemView.findViewById(R.id.civWarn);
-        FrameLayout bg = itemView.findViewById(R.id.flBackground);
-
-        final Item item = mList.get(position);
-        title.setText(item.getTitle());
-        TypeFaceUtils.yunBook(title);
-        titleChinese.setText(item.getTitleChinese());
-        cover.setImageResource(item.getCover());
-        setBackground(position, bg, item.getBgColor());
-
-        warn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                ToastUtils.toast("You find nothing!");
-                DialogUtils.showHomeTipDialog(mContext, item.getMsg());
-            }
-        });
-    }
-
-    private void initMusicView(int position, View itemView) {
-        TextView title = itemView.findViewById(R.id.tvTitle);
-        CircleImageView cover = itemView.findViewById(R.id.civCover);
-        CircleImageView warn = itemView.findViewById(R.id.civWarn);
-        FrameLayout bg = itemView.findViewById(R.id.flBackground);
-        ImageView playPre = itemView.findViewById(R.id.ivPlayPre);
-        final ImageView play = itemView.findViewById(R.id.ivPlay);
-        ImageView playNext = itemView.findViewById(R.id.ivPlayNext);
-
-        final Item item = mList.get(position);
-        title.setText(item.getTitle());
-        TypeFaceUtils.yunBook(title);
-        cover.setImageResource(item.getCover());
-        setBackground(position, bg, item.getBgColor());
-
-        //播放按钮
-        initPlayBtn(play);
-        play.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (MusicLocalManager.isPlaying()) {
-                    MusicLocalManager.pause();
-                    play.setImageResource(R.mipmap.ic_play);
-                } else {
-                    MusicLocalManager.resumePlay();
-                    play.setImageResource(R.mipmap.ic_playing);
-                }
-            }
-        });
-
-        playPre.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!MusicLocalManager.playPre()) {
-                    ToastUtils.toast("到头了～");
-                }
-            }
-        });
-
-        playNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!MusicLocalManager.playNext()) {
-                    ToastUtils.toast("到头了～");
-                }
-            }
-        });
-
-
-        warn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                ToastUtils.toast("You find nothing!");
-                DialogUtils.showHomeTipDialog(mContext, item.getMsg());
-            }
-        });
-
-        //只要播放音乐 就设定图标为播放
-        setMusicChangedListener(new OnMusicChangedListener() {
-            @Override
-            public void onChanged() {
-                play.setImageResource(R.mipmap.ic_playing);
-            }
-        });
-    }
-
-    private void initPlayBtn(ImageView play) {
-        if (MusicLocalManager.isPlaying()) {
-            play.setImageResource(R.mipmap.ic_playing);
-        } else {
-            play.setImageResource(R.mipmap.ic_play);
+    //向每个Item发送事件
+    public <T> void onEvent(T event) {
+        for (SelectItem item : mCache) {
+            item.onEvent(event);
         }
     }
 
-    private void setBackground(int pos, FrameLayout bg, String bgColor) {
-        if ((pos & 1) == 0) {
-            setBackground(bg, BackType.LEFT, bgColor);
-        } else {
-            setBackground(bg, BackType.RIGHT, bgColor);
-        }
-    }
-
-    //将这个drawable设置给View
-    public void setBackground(View view, BackType type, String topColor) {
-        ThemeManager.normalBackground(type, topColor, null, view);
-    }
-
-    public static class Item {
+    //Home页的一个Item需要的基本参数 额外参数可以继承实现
+    public static class ItemModel {
 
         public enum Type {
             NORMAL("normal"), MUSIC("music");
@@ -199,10 +99,10 @@ public class SelectAdapter {
         private Type type;
         private String openPage;
 
-        public Item() {
+        public ItemModel() {
         }
 
-        public Item(Type type, String title, String titleChinese, int cover, String bgColor, String msg, String openPage) {
+        public ItemModel(Type type, String title, String titleChinese, int cover, String bgColor, String msg, String openPage) {
             this.type = type;
             this.title = title;
             this.titleChinese = titleChinese;
@@ -269,15 +169,25 @@ public class SelectAdapter {
         }
     }
 
-    public interface OnMusicChangedListener {
-        void onChanged();
-    }
+    //Home页的一个Item
+    public static abstract class SelectItem {
 
-    public OnMusicChangedListener getMusicChangedListener() {
-        return mChangedListener;
-    }
+        protected Context mContext;
+        protected ItemModel mModel;
 
-    private void setMusicChangedListener(OnMusicChangedListener changedListener) {
-        this.mChangedListener = changedListener;
+        public SelectItem(Context context, ItemModel model) {
+            mContext = context;
+            this.mModel = model;
+        }
+
+        public View getView() {
+            return initView();
+        }
+
+        protected abstract View initView();
+
+        public abstract View getBackgroundView();
+
+        public abstract <T> void onEvent(T event);
     }
 }

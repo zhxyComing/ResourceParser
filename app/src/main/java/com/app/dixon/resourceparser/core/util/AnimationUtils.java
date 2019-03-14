@@ -89,6 +89,18 @@ public class AnimationUtils {
         return animator;
     }
 
+    public static Animator rotate(final View view, float start, float end, long time, @Nullable TimeInterpolator interpolator, @Nullable AnimatorListenerAdapter adapter) {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(view, "rotation", start, end);
+        if (adapter != null) {
+            animator.addListener(adapter);
+        }
+        if (interpolator != null) {
+            animator.setInterpolator(interpolator);
+        }
+        animator.setDuration(time);
+        return animator;
+    }
+
     //不使用AnimatorSet 顺序执行动画
     public static class Chain {
 

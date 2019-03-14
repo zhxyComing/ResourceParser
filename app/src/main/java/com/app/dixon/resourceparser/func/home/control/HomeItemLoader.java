@@ -20,14 +20,14 @@ import java.util.List;
 
 public class HomeItemLoader {
 
-    public static List<SelectAdapter.Item> loadItem(Context context) {
-        List<SelectAdapter.Item> itemList = new ArrayList<>();
+    public static List<SelectAdapter.ItemModel> loadItem(Context context) {
+        List<SelectAdapter.ItemModel> itemList = new ArrayList<>();
         String fromAssets = FileUtils.getFromAssets("home.dson", context);
         try {
             List<DsonData> selects = Dson.parse(fromAssets);
             for (int i = 0; i < selects.size(); i++) {
                 DsonData data = selects.get(i);
-                SelectAdapter.Item item = new SelectAdapter.Item(getType(data),
+                SelectAdapter.ItemModel item = new SelectAdapter.ItemModel(getType(data),
                         data.get("title"),
                         data.get("titleChinese"),
                         0,
@@ -43,20 +43,20 @@ public class HomeItemLoader {
         return itemList;
     }
 
-    private static SelectAdapter.Item.Type getType(DsonData data) {
-        SelectAdapter.Item.Type type = null;
+    private static SelectAdapter.ItemModel.Type getType(DsonData data) {
+        SelectAdapter.ItemModel.Type type = null;
         switch (data.get("type")) {
             case "normal":
-                type = SelectAdapter.Item.Type.NORMAL;
+                type = SelectAdapter.ItemModel.Type.NORMAL;
                 break;
             case "music":
-                type = SelectAdapter.Item.Type.MUSIC;
+                type = SelectAdapter.ItemModel.Type.MUSIC;
                 break;
         }
         return type;
     }
 
-    private static void setItemCover(SelectAdapter.Item item, String title) {
+    private static void setItemCover(SelectAdapter.ItemModel item, String title) {
         if (title.contains("Movie")) {
             item.setCover(R.drawable.cover_movie);
         } else if (title.contains("Magnet")) {

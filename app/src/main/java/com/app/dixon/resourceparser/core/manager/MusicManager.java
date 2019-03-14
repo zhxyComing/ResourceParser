@@ -1,17 +1,22 @@
 package com.app.dixon.resourceparser.core.manager;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.RemoteException;
 
 import com.app.dixon.resourceparser.ICompleteCallback;
 import com.app.dixon.resourceparser.IMusicChangedCallback;
+import com.app.dixon.resourceparser.core.util.Ln;
 import com.app.dixon.resourceparser.core.util.MusicUtils;
+import com.app.dixon.resourceparser.model.MusicAlbum;
 import com.app.dixon.resourceparser.model.MusicInfo;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by dixon.xu on 2019/3/5.
@@ -27,11 +32,15 @@ import java.util.List;
 
 public class MusicManager {
 
+    public static final String PROGRESS_ACTION = "com.dixon.music.progress";
+
     private static IMusicChangedCallback mMusicChangedCallback;
     private static List<MusicInfo> mMusicInfos = new ArrayList<>();
+    private static Map<Integer, MusicAlbum> mMusicAlbums = new HashMap<>();
     private static MediaPlayer mPlayer = new MediaPlayer();
     private static MusicInfo mPlayingMusic;
     private static int mSeek;
+    private static ProgressThread mProgressThread;
 
     //MusicManager的初始化操作
     public static void init(Context context, final ICompleteCallback callback) {
@@ -55,8 +64,32 @@ public class MusicManager {
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
+                //这里先回调 后解析专辑数据
+                parseToAlbums();
             }
         });
+    }
+
+    private static void parseToAlbums() {
+        for (MusicInfo info : mMusicInfos) {
+            int albumId = info.getAlbumId();
+            if (mMusicAlbums.containsKey(albumId)) {
+                mMusicAlbums.get(albumId).getInfos().add(info);
+            } else {
+                MusicAlbum album = new MusicAlbum();
+                album.setId(albumId);
+                album.setName(info.getArtist());
+                ArrayList<MusicInfo> list = new ArrayList<>();
+                list.add(info);
+                album.setInfos(list);
+                mMusicAlbums.put(albumId, album);
+            }
+        }
+        Ln.c("MusicAlbum init " + mMusicInfos);
+    }
+
+    public static Map<Integer, MusicAlbum> getMusicAlbums() {
+        return mMusicAlbums;
     }
 
     private static void initPlay() {
@@ -74,6 +107,7 @@ public class MusicManager {
     }
 
     public static void play(final MusicInfo info) {
+        Ln.c("reset music");
         mPlayer.reset();
         try {
             mPlayer.setDataSource(info.getFilePath());//设置播放mp3文件的路径
@@ -81,6 +115,7 @@ public class MusicManager {
             mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mediaPlayer) {
+                    Ln.c("start music");
                     mPlayer.start();//播放开始
                     mPlayingMusic = info;
                     musicChanged();
@@ -88,6 +123,52 @@ public class MusicManager {
             });
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void startProgress(Context context) {
+        if (mProgressThread == null) {
+            mProgressThread = new ProgressThread(context);
+            mProgressThread.start();
+        } else {
+            stopProgress();
+            startProgress(context);
+        }
+    }
+
+    public static void stopProgress() {
+        if (mProgressThread != null) {
+            mProgressThread.setStop(true);
+            mProgressThread = null;
+        }
+    }
+
+    private static class ProgressThread extends Thread {
+        private Context mContext;
+        private boolean isStop;
+
+        public ProgressThread(Context context) {
+            this.mContext = context;
+        }
+
+        public void setStop(boolean isStop) {
+            this.isStop = isStop;
+        }
+
+        @Override
+        public void run() {
+            super.run();
+            while (!isStop) {
+                int currentPosition = mPlayer.getCurrentPosition();
+                Intent intent = new Intent(PROGRESS_ACTION);
+                intent.putExtra("seek", currentPosition * 100 / mPlayingMusic.getDuration());
+                mContext.sendBroadcast(intent);
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 

@@ -9,9 +9,11 @@ import com.app.dixon.resourceparser.ICompleteCallback;
 import com.app.dixon.resourceparser.IMusicChangedCallback;
 import com.app.dixon.resourceparser.IMusicManagerService;
 import com.app.dixon.resourceparser.core.manager.MusicManager;
+import com.app.dixon.resourceparser.model.MusicAlbum;
 import com.app.dixon.resourceparser.model.MusicInfo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 运行在:music进程，负责链接主进程与MusicManager
@@ -53,6 +55,11 @@ public class MusicManagerService extends Service {
             return MusicManager.getMusicInfos();
         }
 
+        @Override
+        public Map<Integer, MusicAlbum> getMusicAlbums() throws RemoteException {
+            return MusicManager.getMusicAlbums();
+        }
+
         //绑定后由客户端决定初始化的时机
         @Override
         public void init(ICompleteCallback cb) throws RemoteException {
@@ -62,6 +69,16 @@ public class MusicManagerService extends Service {
         @Override
         public void play(MusicInfo info) throws RemoteException {
             MusicManager.play(info);
+        }
+
+        @Override
+        public void startProgress() throws RemoteException {
+            MusicManager.startProgress(MusicManagerService.this);
+        }
+
+        @Override
+        public void stopProgress() throws RemoteException {
+            MusicManager.stopProgress();
         }
 
         @Override

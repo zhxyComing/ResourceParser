@@ -22,6 +22,7 @@ import com.app.dixon.resourceparser.core.util.ScreenUtils;
 public class FootScrollView extends CardView {
 
     private Statue mStatue;
+    private OnStatueChangedListener mListener;
 
     public FootScrollView(@NonNull Context context) {
         super(context);
@@ -91,6 +92,9 @@ public class FootScrollView extends CardView {
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 mStatue = showStatue;
+                if (mListener != null) {
+                    mListener.onShow();
+                }
             }
         });
 //        ObjectAnimator alpha = ObjectAnimator.ofFloat(this, "alpha", 0.5F, 1);
@@ -109,6 +113,9 @@ public class FootScrollView extends CardView {
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 mStatue = hideStatue;
+                if (mListener != null) {
+                    mListener.onHide();
+                }
             }
         });
 //        ObjectAnimator alpha = ObjectAnimator.ofFloat(this, "alpha", 1, 0);
@@ -122,5 +129,19 @@ public class FootScrollView extends CardView {
     private void quickHide() {
         ObjectAnimator.ofFloat(this, "translationY", 0, getMeasuredHeight()).setDuration(0).start();
         mStatue = hideStatue;
+    }
+
+    public interface OnStatueChangedListener {
+        void onShow();
+
+        void onHide();
+    }
+
+    public void setOnStatueChangedListener(OnStatueChangedListener listener) {
+        this.mListener = listener;
+    }
+
+    public boolean isShow() {
+        return mStatue == showStatue;
     }
 }

@@ -13,24 +13,24 @@ import com.app.dixon.resourceparser.R;
 import com.app.dixon.resourceparser.core.util.Ln;
 import com.app.dixon.resourceparser.core.util.TypeFaceUtils;
 import com.app.dixon.resourceparser.func.music.control.MusicLocalManager;
+import com.app.dixon.resourceparser.model.MusicAlbum;
 import com.app.dixon.resourceparser.model.MusicInfo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by dixon.xu on 2019/3/7.
  */
 
-public class MusicListAdapter extends BaseAdapter {
+public class MusicAlbumListAdapter extends BaseAdapter {
 
     private Context mContext;
-    private List<MusicInfo> mList;
-    private MusicInfo mPlayingMusic;
+    private List<MusicAlbum> mList;
 
-    public MusicListAdapter(Context context, List<MusicInfo> list) {
+    public MusicAlbumListAdapter(Context context, List<MusicAlbum> list) {
         this.mContext = context;
         this.mList = list;
-        this.mPlayingMusic = MusicLocalManager.getPlayingMusic();
     }
 
     @Override
@@ -52,7 +52,7 @@ public class MusicListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder vh;
         if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_music_list, null);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_music_album_list, null);
             vh = new ViewHolder(convertView);
             convertView.setTag(vh);
         } else {
@@ -63,42 +63,24 @@ public class MusicListAdapter extends BaseAdapter {
     }
 
     private void loadView(ViewHolder vh, int position) {
-        MusicInfo info = mList.get(position);
+        MusicAlbum album = mList.get(position);
         vh.num.setText(String.valueOf(position));
-        vh.title.setText(info.getMusicName());
-        vh.time.setText(timeParse(info.getDuration()));
+        vh.title.setText(album.getName() == null ? String.valueOf(album.getId()) : album.getName());
+        vh.count.setText(String.valueOf(album.getInfos().size()));
         if ((position & 1) == 0) {
             vh.itemLayout.setBackgroundColor(Color.parseColor("#F9F9F9"));
         } else {
             vh.itemLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
         }
-        setPlayingItem(vh, info);
     }
 
-    private void setPlayingItem(ViewHolder vh, MusicInfo itemInfo) {
-//        Ln.c("setPlayingItem " + itemInfo);
-        if (mPlayingMusic != null && mPlayingMusic.equals(itemInfo)) {
-            vh.title.setTextColor(Color.parseColor("#4caf50"));
-            vh.itemLayout.setBackgroundColor(Color.parseColor("#EAEAEA"));
-        } else {
-            vh.title.setTextColor(Color.parseColor("#1976d2"));
-        }
-    }
-
-    public void notifyData(List<MusicInfo> list) {
+    public void notifyData(List<MusicAlbum> list) {
         if (mList == null) {
             mList = list;
         } else {
             mList.clear();
             mList.addAll(list);
         }
-        mPlayingMusic = MusicLocalManager.getPlayingMusic();
-        notifyDataSetChanged();
-    }
-
-    public void notifyData() {
-        mPlayingMusic = MusicLocalManager.getPlayingMusic();
-        Ln.c("playingMusic " + mPlayingMusic);
         notifyDataSetChanged();
     }
 
@@ -106,48 +88,19 @@ public class MusicListAdapter extends BaseAdapter {
 
         TextView num;
         TextView title;
-        TextView time;
+        TextView count;
         LinearLayout itemLayout;
 
         public ViewHolder(View view) {
             num = view.findViewById(R.id.tvNum);
-            time = view.findViewById(R.id.tvTime);
+            count = view.findViewById(R.id.tvCount);
             title = view.findViewById(R.id.tvTitle);
             itemLayout = view.findViewById(R.id.llItemLayout);
-            TypeFaceUtils.yunBook(num, time, title);
+            TypeFaceUtils.yunBook(num, count, title);
         }
     }
 
-    public static String timeParse(long duration) {
-        String time = "";
-        long minute = duration / 60000;
-        long seconds = duration % 60000;
-        long second = Math.round((float) seconds / 1000);
-        if (minute < 10) {
-            time += "0";
-        }
-        time += minute + ":";
-        if (second < 10) {
-            time += "0";
-        }
-        time += second;
-        return time;
-    }
-
-    public List<MusicInfo> getList() {
+    public List<MusicAlbum> getList() {
         return mList;
-    }
-
-    public int getPosition(MusicInfo info) {
-        if (info == null) {
-            return -1;
-        }
-        for (int i = 0; i < mList.size(); i++) {
-            MusicInfo temp = mList.get(i);
-            if (temp != null && temp.equals(info)) {
-                return i;
-            }
-        }
-        return -1;
     }
 }

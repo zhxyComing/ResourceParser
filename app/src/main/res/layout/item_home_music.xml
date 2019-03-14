@@ -97,4 +97,180 @@
 
     </LinearLayout>
 
+    <com.app.dixon.resourceparser.core.pub.view.FootScrollView
+        android:id="@+id/fsvMusicListLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="2dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/ivMore"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="@dimen/margin_normal"
+                    android:src="@mipmap/ic_up_more" />
+
+                <ImageView
+                    android:id="@+id/ivLocation"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@mipmap/ic_location" />
+
+                <!--<TextView-->
+                <!--android:id="@+id/tvMusicTitle"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_weight="1"-->
+                <!--android:gravity="center"-->
+                <!--android:text="本地 Music"-->
+                <!--android:textColor="@color/text_black" />-->
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:id="@+id/ivHide"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="@dimen/margin_normal"
+                    android:src="@mipmap/ic_arrow_hide" />
+
+            </LinearLayout>
+
+            <!--功能布局 后续用include-->
+            <com.app.dixon.resourceparser.core.pub.view.FlexibleFrameLayout
+                android:id="@+id/flFunctionLayout"
+                android:layout_width="match_parent"
+                android:layout_height="126dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="4">
+
+                    <LinearLayout
+                        android:id="@+id/llAlbum"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="#F9F9F9"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/ivAlbum"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="@dimen/margin_small"
+                            android:src="@mipmap/ic_album" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:layout_marginBottom="@dimen/margin_small"
+                            android:text="专辑"
+                            android:textColor="#1976d2"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <FrameLayout
+                    android:id="@+id/flTargetLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#F9F9F9">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/ivBackFun"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_margin="@dimen/margin_normal"
+                            android:src="@mipmap/ic_function_back" />
+
+                        <ListView
+                            android:id="@+id/lvTargetList"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:divider="@null"
+                            android:scrollbars="none" />
+
+                    </LinearLayout>
+
+                </FrameLayout>
+
+            </com.app.dixon.resourceparser.core.pub.view.FlexibleFrameLayout>
+
+            <ProgressBar
+                android:id="@+id/pbProgressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_gravity="center"
+                android:max="100"
+                android:progress="0" />
+
+            <ListView
+                android:id="@+id/lvMusicList"
+                android:layout_width="match_parent"
+                android:layout_height="170dp"
+                android:divider="@null"
+                android:scrollbars="none" />
+
+        </LinearLayout>
+
+    </com.app.dixon.resourceparser.core.pub.view.FootScrollView>
+
+    <LinearLayout
+        android:id="@+id/llGo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="@dimen/margin_large"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/margin_normal"
+            android:rotation="180"
+            android:src="@mipmap/ic_arrow_down" />
+
+        <TextView
+            android:id="@+id/tvGo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Show"
+            android:textColor="#1976d2" />
+    </LinearLayout>
+
 </FrameLayout>

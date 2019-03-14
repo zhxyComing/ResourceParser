@@ -75,4 +75,27 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/llGo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="@dimen/margin_large"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginBottom="@dimen/margin_normal"
+            android:src="@mipmap/ic_arrow_down" />
+
+        <TextView
+            android:id="@+id/tvGo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="GO"
+            android:textColor="#1976d2" />
+    </LinearLayout>
+
 </FrameLayout>
