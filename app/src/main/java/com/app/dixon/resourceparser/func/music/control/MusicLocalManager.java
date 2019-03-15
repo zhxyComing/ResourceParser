@@ -178,4 +178,16 @@ public class MusicLocalManager {
             e.printStackTrace();
         }
     }
+
+    public static boolean setMusicListByAlbum(int id) {
+        if (readyService == null) {
+            return false;
+        }
+        try {
+            return readyService.setMusicListByAlbum(id);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

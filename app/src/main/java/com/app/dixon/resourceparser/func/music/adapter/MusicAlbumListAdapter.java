@@ -12,9 +12,12 @@ import android.widget.TextView;
 import com.app.dixon.resourceparser.R;
 import com.app.dixon.resourceparser.core.util.Ln;
 import com.app.dixon.resourceparser.core.util.TypeFaceUtils;
+import com.app.dixon.resourceparser.func.home.event.MusicListByAlbumEvent;
 import com.app.dixon.resourceparser.func.music.control.MusicLocalManager;
 import com.app.dixon.resourceparser.model.MusicAlbum;
 import com.app.dixon.resourceparser.model.MusicInfo;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 import java.util.Map;
@@ -63,7 +66,7 @@ public class MusicAlbumListAdapter extends BaseAdapter {
     }
 
     private void loadView(ViewHolder vh, int position) {
-        MusicAlbum album = mList.get(position);
+        final MusicAlbum album = mList.get(position);
         vh.num.setText(String.valueOf(position));
         vh.title.setText(album.getName() == null ? String.valueOf(album.getId()) : album.getName());
         vh.count.setText(String.valueOf(album.getInfos().size()));
@@ -72,6 +75,16 @@ public class MusicAlbumListAdapter extends BaseAdapter {
         } else {
             vh.itemLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
         }
+        vh.itemLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean isSuccess = MusicLocalManager.setMusicListByAlbum(album.getId());
+                if (isSuccess) {
+                    //通知按专辑刷新播放音乐列表
+                    EventBus.getDefault().post(new MusicListByAlbumEvent(album));
+                }
+            }
+        });
     }
 
     public void notifyData(List<MusicAlbum> list) {

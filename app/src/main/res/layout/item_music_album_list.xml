@@ -9,6 +9,7 @@
         android:id="@+id/llItemLayout"
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:drawable="?attr/selectableItemBackground"
         android:orientation="horizontal">
 
         <TextView

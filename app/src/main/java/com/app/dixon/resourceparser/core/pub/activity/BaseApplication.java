@@ -5,6 +5,7 @@ import android.app.Application;
 import com.app.dixon.resourceparser.core.manager.AnalyticsManager;
 import com.app.dixon.resourceparser.core.manager.AsyncImageLoader;
 import com.app.dixon.resourceparser.core.manager.ParserManager;
+import com.app.dixon.resourceparser.core.manager.SharedConfig;
 
 /**
  * Created by dixon.xu on 2019/2/1.
@@ -27,6 +28,8 @@ public class BaseApplication extends Application {
         AsyncImageLoader.init(this);
         //友盟统计
         AnalyticsManager.init(this);
+        //
+        SharedConfig.init(this);
     }
 
     public static Application getApplication() {

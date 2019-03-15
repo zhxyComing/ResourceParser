@@ -31,6 +31,8 @@ import com.app.dixon.resourceparser.core.util.Ln;
 import com.app.dixon.resourceparser.core.util.MusicUtils;
 import com.app.dixon.resourceparser.core.util.ToastUtils;
 import com.app.dixon.resourceparser.core.util.TypeFaceUtils;
+import com.app.dixon.resourceparser.func.home.control.MusicAlbumComparator;
+import com.app.dixon.resourceparser.func.home.event.MusicListByAlbumEvent;
 import com.app.dixon.resourceparser.func.home.event.MusicManagerReadyEvent;
 import com.app.dixon.resourceparser.func.home.event.OnDestroyEvent;
 import com.app.dixon.resourceparser.func.home.event.OnPauseEvent;
@@ -41,8 +43,13 @@ import com.app.dixon.resourceparser.func.music.control.MusicLocalManager;
 import com.app.dixon.resourceparser.model.MusicAlbum;
 import com.app.dixon.resourceparser.model.MusicInfo;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -86,6 +93,9 @@ public class MusicSelect extends SelectAdapter.SelectItem {
 
     @Override
     protected View initView() {
+        //注册事件总线
+        EventBus.getDefault().register(this);
+
         View itemView = LayoutInflater.from(mContext).inflate(R.layout.item_home_music, null);
         findView(itemView);
 
@@ -208,6 +218,8 @@ public class MusicSelect extends SelectAdapter.SelectItem {
         }
         Collection<MusicAlbum> valueCollection = musicAlbums.values();
         List<MusicAlbum> albums = new ArrayList<>(valueCollection);
+        Collections.sort(albums, new MusicAlbumComparator());
+        Ln.c("MusicAlbum Sort " + musicAlbums);
         if (mAlbumAdapter == null) {
             mAlbumAdapter = new MusicAlbumListAdapter(mContext, albums);
             mTargetListView.setAdapter(mAlbumAdapter);
@@ -317,6 +329,7 @@ public class MusicSelect extends SelectAdapter.SelectItem {
             updatePlayingHomeLayout();
         } else {
             mPlayBtn.setImageResource(R.mipmap.ic_play);
+            updatePlayingHomeLayoutByCache();
         }
     }
 
@@ -387,6 +400,19 @@ public class MusicSelect extends SelectAdapter.SelectItem {
         }
     }
 
+    //仅显示缓存信息 适用于音乐未播放 但是加载缓存的情况
+    private void updatePlayingHomeLayoutByCache() {
+        //只要播放音乐 就设定图标为播放
+        MusicInfo playingMusic = MusicLocalManager.getPlayingMusic();
+        if (playingMusic != null) {
+            //如果音乐页面放在第二页 则会无缘无故刷新到首页 不清楚原因 只能将音乐页面放到首页
+            //封面刷新
+            mCover.setImageBitmap(MusicUtils.getMusicBitemp(mContext, playingMusic.getSongId(), playingMusic.getAlbumId()));
+            //音乐名字刷新
+            mTitle.setText(playingMusic.getMusicName());
+        }
+    }
+
     public class SeekReceiver extends BroadcastReceiver {
 
         @Override
@@ -412,5 +438,16 @@ public class MusicSelect extends SelectAdapter.SelectItem {
     private void onDestroy() {
         MusicLocalManager.stopProgress();
         mContext.unregisterReceiver(mReceiver);
+    }
+
+    //根据Album刷新音乐列表
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(MusicListByAlbumEvent event) {
+        List<MusicInfo> infos = event.getAlbum().getInfos();
+        if (infos != null && infos.size() > 0) {
+            mMusicAdapter.notifyData(event.getAlbum().getInfos());
+            //播放第一首
+            MusicLocalManager.play(infos.get(0));
+        }
     }
 }

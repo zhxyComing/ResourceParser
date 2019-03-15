@@ -9,6 +9,7 @@ import com.app.dixon.resourceparser.ICompleteCallback;
 import com.app.dixon.resourceparser.IMusicChangedCallback;
 import com.app.dixon.resourceparser.IMusicManagerService;
 import com.app.dixon.resourceparser.core.manager.MusicManager;
+import com.app.dixon.resourceparser.core.util.Ln;
 import com.app.dixon.resourceparser.model.MusicAlbum;
 import com.app.dixon.resourceparser.model.MusicInfo;
 
@@ -68,6 +69,7 @@ public class MusicManagerService extends Service {
 
         @Override
         public void play(MusicInfo info) throws RemoteException {
+            Ln.c("play 0");
             MusicManager.play(info);
         }
 
@@ -119,6 +121,11 @@ public class MusicManagerService extends Service {
         @Override
         public boolean playPre() throws RemoteException {
             return MusicManager.playPre();
+        }
+
+        @Override
+        public boolean setMusicListByAlbum(int id) throws RemoteException {
+            return MusicManager.setMusicListByAlbum(id);
         }
     };
 }

@@ -157,6 +157,15 @@
 
             </LinearLayout>
 
+            <ProgressBar
+                android:id="@+id/pbProgressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_gravity="center"
+                android:max="100"
+                android:progress="0" />
+
             <!--功能布局 后续用include-->
             <com.app.dixon.resourceparser.core.pub.view.FlexibleFrameLayout
                 android:id="@+id/flFunctionLayout"
@@ -226,16 +235,13 @@
 
                 </FrameLayout>
 
-            </com.app.dixon.resourceparser.core.pub.view.FlexibleFrameLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_gravity="bottom"
+                    android:background="@color/back_color_gray_light" />
 
-            <ProgressBar
-                android:id="@+id/pbProgressBar"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_gravity="center"
-                android:max="100"
-                android:progress="0" />
+            </com.app.dixon.resourceparser.core.pub.view.FlexibleFrameLayout>
 
             <ListView
                 android:id="@+id/lvMusicList"

@@ -42,4 +42,6 @@ interface IMusicManagerService {
     boolean playNext();
 
     boolean playPre();
+
+    boolean setMusicListByAlbum(int id);
 }
