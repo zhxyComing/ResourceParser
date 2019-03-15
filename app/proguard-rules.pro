@@ -32,3 +32,13 @@
 -keep public class com.app.dixon.resourceparser.R$*{
 public static final int *;
 }
+
+-keep public class com.app.dixon.resourceparser.func.home.event.**
+
+# event bus start
+-keepclassmembers class ** {
+    public void onEvent*(**);
+}
+-dontwarn org.greenrobot.**
+-keep class org.greenrobot.** {*;}
+# event bus end
