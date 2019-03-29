@@ -48,7 +48,7 @@ public class DownloadListRequest extends Action1<List<MovieDownload>> {
         for (int i = 0; i < tds.size(); i++) {
             Element nodeA = tds.get(i).selectFirst("a");
             if (nodeA != null) {
-                String downloadUrl = nodeA.attr("src");
+                String downloadUrl = nodeA.attr("href");
                 if (!TextUtils.isEmpty(downloadUrl)) {
                     list.add(new MovieDownload(downloadUrl));
                 }
